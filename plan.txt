@@ -1,0 +1,28 @@
+PAPER ACCOUNT DETAILS:
+fumjcn147
+DUM758689
+
+Weekend 1
+Spin up IBKR TWS/Gateway + ib_insync; fetch historical bars → Parquet DONE, need to implement chunking for longer durations
+
+Backtrader backtest working on one symbol DONE
+5 MORE STRATEGIES
+
+C Trader Connection
+
+Streamlit page showing equity curve + key metrics for ctrader and ibkr
+
+
+
+Weekend 2
+Live feed via IBStore; one small live strategy in paper
+Live feed via ctrader
+
+Basic OMS wrapper + risk checks
+
+Store trades/fills/PnL to Postgres; Streamlit “Live” page
+
+Weekend 3
+Scheduler for session start/stop + EOD reports
+Add Redis cache and alerts
+Dockerize services; add tests & lint in CI
