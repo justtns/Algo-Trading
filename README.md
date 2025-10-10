@@ -10,11 +10,6 @@ A production-oriented layout for:
 * **Risk, sizing, routing, and PnL** per strategy via virtual books
 * **Control** via Telegram bot and optional HTTP API
 
-> Diagrams
-> ![Architecture](sandbox:/mnt/data/trading_system_architecture.png)
-> ![Order Lifecycle](sandbox:/mnt/data/order_lifecycle_sequence.png)
-> ![Data Model](sandbox:/mnt/data/data_model_events.png)
-
 ---
 
 ## Directory Layout
