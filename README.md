@@ -1,6 +1,4 @@
-
 ---
-
 # Trading System 
 
 A production-oriented layout for:
@@ -9,9 +7,7 @@ A production-oriented layout for:
 * **Live streaming & execution** with IBKR (equities) and cTrader (FX)
 * **Risk, sizing, routing, and PnL** per strategy via virtual books
 * **Control** via Telegram bot and optional HTTP API
-
 ---
-
 ## Directory Layout
 
 ```text
@@ -158,9 +154,7 @@ Pure signal functions: **bars/features → target positions**.
 * `mean_reversion_signal(bars: pd.DataFrame, state: dict) -> dict[symbol, target_pos]`
 * `breakout_signal(bars, state) -> dict[...]`
 * `registry() -> dict[str, Callable]` *(name → function)*
-* `stateful_reset()` *(optional, after reconnect)*
-
-> ✅ Keep these functions *stateless or light-state* so backtest/live parity holds.
+* `stateful_reset()` *(optional, after reconnect)
 
 ---
 
@@ -320,4 +314,3 @@ Optional internal REST.
 6. **Telegram/HTTP** can pause/start, tweak risk, or trigger `/panic`.
 
 ---
-
