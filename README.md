@@ -321,4 +321,3 @@ Optional internal REST.
 
 ---
 
-> Replace the image links with local paths (e.g., `docs/architecture.png`) if you move the PNGs into your repo.
