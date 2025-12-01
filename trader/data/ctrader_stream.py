@@ -1,8 +1,18 @@
 """
 Placeholder for cTrader streaming adapter.
-Implement connection/auth + quote subscription here.
+Hook up your cTrader OpenAPI client here and push quotes into DataStreamer.
 """
 from __future__ import annotations
 
-# TODO: add cTrader OpenAPI/FIX client integration
+from typing import AsyncIterator
 
+# TODO: integrate actual cTrader client
+
+
+async def stream_quotes(symbols: list[str]) -> AsyncIterator[dict]:
+    """
+    Async generator yielding quote dicts: {symbol, bid, ask, ts}
+    Replace with real cTrader streaming logic.
+    """
+    if False:
+        yield {}
