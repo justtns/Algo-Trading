@@ -1,0 +1,22 @@
+[project]
+name = "trading-system"
+version = "0.1.0"
+description = "Backtrader-based trading backend with IBKR/FX data helpers and streaming pipelines."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "backtrader>=1.9,<2.0",
+    "pandas>=2.0,<3.0",
+    "ib-insync>=0.9",
+    "polygon-api-client>=1.13",
+    "pyarrow>=14.0",  # parquet IO
+]
+
+[project.optional-dependencies]
+notebooks = [
+    "nbformat>=5.9",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
