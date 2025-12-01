@@ -10,7 +10,7 @@ from typing import Any, Dict, Iterable, Optional, Sequence, Tuple
 import backtrader as bt
 import pandas as pd
 
-from .data import DataHandler, DataNormalizer, DataPackage, StreamingOHLCVFeed
+from ..data.pipeline import DataHandler, DataNormalizer, DataPackage, StreamingOHLCVFeed
 
 
 @dataclass

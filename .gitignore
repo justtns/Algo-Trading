@@ -1,3 +1,7 @@
-/data
+/saved_data
 /backend/__pycache__/
 /backend/.ipynb_checkpoints
+/services/__pycache__/
+/historical_data_services/__pycache__/
+/trader/**/__pycache__/
+/trader/.ipynb_checkpoints

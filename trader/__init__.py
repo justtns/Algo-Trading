@@ -1,10 +1,10 @@
 """
-Lightweight backend scaffolding for running strategies with Backtrader.
-Exposes TradeRunner, TradeRunnerPool, and helpers for streaming data.
+Primary package entrypoint for the trading system.
+Exposes data pipeline helpers, TradeRunner, routing, and portfolio store.
 """
 
-from .data import DataHandler, DataNormalizer, DataStreamer, StreamingOHLCVFeed
-from .traderunner import (
+from trader.data.pipeline import DataHandler, DataNormalizer, DataStreamer, StreamingOHLCVFeed, DataPackage
+from trader.exec.traderunner import (
     TradeRunner,
     TradeRunnerBuilder,
     TradeRunnerPool,
@@ -12,14 +12,15 @@ from .traderunner import (
     StrategySpec,
     RunnerConfig,
 )
-from .router import OrderRouter
-from .store import TickerStore
+from trader.exec.router import OrderRouter
+from trader.portfolio.store import TickerStore
 
 __all__ = [
     "DataHandler",
     "DataNormalizer",
     "DataStreamer",
     "StreamingOHLCVFeed",
+    "DataPackage",
     "TradeRunner",
     "TradeRunnerBuilder",
     "TradeRunnerPool",
