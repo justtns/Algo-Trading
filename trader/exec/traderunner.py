@@ -5,12 +5,14 @@ import json
 import threading
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, Optional, Sequence, Tuple, TYPE_CHECKING
 
 import backtrader as bt
 import pandas as pd
 
 from ..data.pipeline import DataHandler, DataNormalizer, DataPackage, StreamingOHLCVFeed
+if TYPE_CHECKING:  # pragma: no cover
+    from trader.exec.router import OrderRouter
 
 
 @dataclass
@@ -95,6 +97,7 @@ class TradeRunner:
         config: Optional[RunnerConfig] = None,
         normalizer: Optional[DataNormalizer] = None,
         data_handler: Optional[DataHandler] = None,
+        order_router: OrderRouter | None = None, 
     ):
         self.spec = spec
         self.config = config or RunnerConfig()
@@ -103,6 +106,7 @@ class TradeRunner:
         self.normalizer = normalizer or DataNormalizer()
         self.data_handler = data_handler or DataHandler(self.normalizer)
         self.risk = spec.risk or RiskEstimator()
+        self.order_router = order_router
         self._thread: Optional[threading.Thread] = None
         self._results: Any = None
         self._cerebro: Optional[bt.Cerebro] = None
@@ -220,6 +224,8 @@ class TradeRunner:
         for strat_ref, params in entries:
             strat_cls = self._resolve_strategy_ref(strat_ref)
             enriched = self._with_contract_size(params or {})
+            if self.order_router and "router" not in enriched:
+                enriched["router"] = self.order_router
             cerebro.addstrategy(strat_cls, **enriched)
 
     def _add_analyzers(self, cerebro: bt.Cerebro) -> None:
@@ -244,18 +250,18 @@ class TradeRunner:
             normalized = self.normalizer.to_ohlcv(df, tz=self.config.tz)
             if self._should_invert_fx():
                 normalized = self._invert_ohlc(normalized)
-            feed = bt.feeds.PandasData(dataname=normalized, name=name)
+            feed = bt.feeds.PandasData(dataname=normalized, name=name) # type: ignore
             if self.config.resample:
                 # Resample using pandas rule then feed to Cerebro
                 resampled = self.data_handler.resample(normalized, rule=self.config.resample)
-                feed = bt.feeds.PandasData(dataname=resampled, name=name)
+                feed = bt.feeds.PandasData(dataname=resampled, name=name) # type: ignore
             return feed
 
         if isinstance(src, StreamingOHLCVFeed):
             return src
 
         if hasattr(src, "get"):  # Queue-like for live streaming bars
-            return StreamingOHLCVFeed(src, name=name)
+            return StreamingOHLCVFeed(src, name=name) # type: ignore
 
         if isinstance(src, bt.feeds.DataBase):
             return src
@@ -298,7 +304,7 @@ class TradeRunner:
     def stop(self):
         if hasattr(self.spec.data, "put_nowait"):
             try:
-                self.spec.data.put_nowait(None)
+                self.spec.data.put_nowait(None) # type: ignore
             except Exception:
                 pass
 
@@ -349,10 +355,17 @@ class TradeRunnerBuilder:
         specs: Sequence[StrategySpec],
         *,
         config: Optional[RunnerConfig] = None,
+        order_router: OrderRouter | None = None,
     ) -> TradeRunnerPool:
         cfg = config or RunnerConfig()
         runners = [
-            TradeRunner(spec, config=cfg, normalizer=self.normalizer, data_handler=self.data_handler)
+            TradeRunner(
+                spec,
+                config=cfg,
+                normalizer=self.normalizer,
+                data_handler=self.data_handler,
+                order_router=order_router,
+            )
             for spec in specs
         ]
         return TradeRunnerPool(runners)

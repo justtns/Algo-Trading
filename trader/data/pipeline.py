@@ -52,7 +52,7 @@ class DataNormalizer:
         tz: str | None = "UTC",
     ) -> bt.feeds.PandasData:
         normalized = self.to_ohlcv(df, tz=tz)
-        return bt.feeds.PandasData(dataname=normalized, name=name)
+        return bt.feeds.PandasData(dataname=normalized, name=name) # type: ignore
 
 
 class DataHandler:
@@ -89,7 +89,7 @@ class DataHandler:
             "close": "last",
             "volume": "sum",
         }
-        return df.resample(rule, label=label, closed=closed).agg(agg).dropna()
+        return df.resample(rule, label=label, closed=closed).agg(agg).dropna() # type: ignore
 
 
 class DataStreamer:
@@ -122,9 +122,17 @@ class DataStreamer:
         """
         if df is None or df.empty:
             return
+
+        df = df.copy()
+        if not isinstance(df.index, pd.DatetimeIndex):
+            df.index = pd.to_datetime(df.index, utc=True)
+        else:
+            df.index = df.index.tz_localize("UTC") if df.index.tz is None else df.index.tz_convert("UTC")
+
         for idx, row in df.iterrows():
+            ts: pd.Timestamp = pd.Timestamp(idx)  # type: ignore
             bar = {
-                "datetime": pd.to_datetime(idx, utc=True),
+                "datetime": ts,
                 "open": float(row["open"]),
                 "high": float(row["high"]),
                 "low": float(row["low"]),
@@ -147,16 +155,14 @@ class StreamingOHLCVFeed(bt.feeds.DataBase):
     Backtrader data feed that consumes OHLCV bars from a Queue provided by DataStreamer.
     Put a sentinel None on the queue to stop the feed.
     """
-
-    params = (("name", None),)
-    lines = ("open", "high", "low", "close", "volume", "openinterest")
-    datafields = lines
-
+    
     def __init__(self, source_queue: Queue, *, name: Optional[str] = None):
         super().__init__()
         self._queue = source_queue
         self._stopped = False
         self.p.name = name
+        self.params = (("name", None),)
+        self.lines._getlines = ("open", "high", "low", "close", "volume", "openinterest")
 
     def _load(self):
         if self._stopped:

@@ -1,5 +1,6 @@
 import backtrader as bt
 from datetime import datetime, time, timedelta, date
+from trader.exec.router import OrderRequest
 
 class GotobiBT(bt.Strategy):
     """
@@ -31,6 +32,7 @@ class GotobiBT(bt.Strategy):
         notrade_days=None,          # set({date(2024,1,1), ...}) if you have your own list
         gotobi_days=(5, 10, 15, 20, 25, 30),
         trade_size=1.0,             # +1 unit by default
+        router=None,                # optional OrderRouter for live dispatch
     )
 
     def __init__(self):
@@ -118,6 +120,27 @@ class GotobiBT(bt.Strategy):
             notrade = set(self.p.notrade_days) if self.p.notrade_days else set()
             return lambda d: d in notrade
 
+    def _send_router_order(self, side: str, size: float, *, order_type: str = "market", price: float | None = None):
+        """
+        Mirror the simulated order to a live router if provided.
+        """
+        router = getattr(self.p, "router", None)
+        if router is None or size == 0:
+            return
+        try:
+            router.send(
+                OrderRequest(
+                    symbol=self.data._name,
+                    side=side,
+                    size=float(abs(size)),
+                    order_type=order_type,
+                    price=price,
+                ),
+                last_price=float(self.data.close[0]) if price is None else None,
+            )
+        except Exception as exc:
+            print(f"[{self._cur_dt()}] ROUTER ERROR {exc}")
+
     # ---------------- Strategy loop ----------------
     def next(self):
         now_dt = self._cur_dt()
@@ -135,7 +158,10 @@ class GotobiBT(bt.Strategy):
         if self.target_trade_date != now_d:
             # But ensure we exit if holding from any edge case (shouldn't happen with same-day exit)
             if now_t == self.t_exit and self.position.size != 0:
+                qty = self.position.size
                 self.close()
+                side = "SELL" if qty > 0 else "BUY"
+                self._send_router_order(side, qty)
             return
 
         # Entry at entry_time (only once)
@@ -143,13 +169,18 @@ class GotobiBT(bt.Strategy):
             # Enter +1 unit
             if self.p.trade_size > 0:
                 self.buy(size=self.p.trade_size)
+                self._send_router_order("BUY", self.p.trade_size)
             else:
                 self.sell(size=-self.p.trade_size)
+                self._send_router_order("SELL", -self.p.trade_size)
             self.entered_today = True
 
         # Exit at exit_time (same day)
         if self.entered_today and now_t == self.t_exit and self.position.size != 0:
+            qty = self.position.size
             self.close()
+            side = "SELL" if qty > 0 else "BUY"
+            self._send_router_order(side, qty)
 
     # ---------------- Notifications (optional logs) ----------------
     def notify_order(self, order):
@@ -176,6 +207,7 @@ class GotobiBTWithSL(bt.Strategy):
         gotobi_days=(5, 10, 15, 20, 25, 30),
         trade_size=1.0,                    # sign matters: >0 long, <0 short
         stop_loss_pct=None,                # e.g. 0.003 for 0.3% stop; None disables
+        router=None,                       # optional OrderRouter for live dispatch
     )
 
     def __init__(self):
@@ -235,6 +267,25 @@ class GotobiBTWithSL(bt.Strategy):
             s = set(self.p.notrade_days) if self.p.notrade_days else set()
             return lambda d: d in s
 
+    def _send_router_order(self, side: str, size: float, *, order_type: str = "market", price: float | None = None):
+        router = getattr(self.p, "router", None)
+        if router is None or size == 0:
+            return
+        try:
+            router.send(
+                OrderRequest(
+                    symbol=self.data._name,
+                    side=side,
+                    size=float(abs(size)),
+                    order_type=order_type,
+                    price=price,
+                ),
+                last_price=float(self.data.close[0]) if price is None else None,
+            )
+        except Exception as exc:
+            dt = self.data.datetime.datetime(0)
+            print(f"[{dt}] ROUTER ERROR {exc}")
+
     # -------- core --------
     def next(self):
         now_d = self._today()
@@ -261,14 +312,19 @@ class GotobiBTWithSL(bt.Strategy):
                 return
             if sz > 0:
                 self.entry_order = self.buy(size=abs(sz))
+                self._send_router_order("BUY", abs(sz))
             else:
                 self.entry_order = self.sell(size=abs(sz))
+                self._send_router_order("SELL", abs(sz))
 
         # scheduled time exit (if still in position)
         if now_t == self.t_exit:
             self._cancel_stop()
             if self.position.size != 0:
+                qty = self.position.size
+                side = "SELL" if qty > 0 else "BUY"
                 self.close()
+                self._send_router_order(side, abs(qty))
             self.entry_order = None
             self.entered_today = False  # allow next day
 
@@ -302,10 +358,12 @@ class GotobiBTWithSL(bt.Strategy):
                         stop_px = px * (1.0 - self.p.stop_loss_pct)
                         self.stop_order = self.sell(exectype=bt.Order.Stop, price=stop_px, size=abs(self.position.size))
                         print(f"[{dt}] STOP SELL placed at {stop_px:.5f}")
+                        self._send_router_order("SELL", abs(self.position.size), order_type="stop", price=stop_px)
                     else:
                         stop_px = px * (1.0 + self.p.stop_loss_pct)
                         self.stop_order = self.buy(exectype=bt.Order.Stop, price=stop_px, size=abs(self.position.size))
                         print(f"[{dt}] STOP BUY placed at {stop_px:.5f}")
+                        self._send_router_order("BUY", abs(self.position.size), order_type="stop", price=stop_px)
             elif order.status in [bt.Order.Canceled, bt.Order.Margin, bt.Order.Rejected]:
                 print(f"[{dt}] ENTRY {order.getstatusname()} {order.data._name}")
                 self.entry_order = None

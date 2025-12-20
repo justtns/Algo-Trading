@@ -11,59 +11,37 @@ from typing import Any, Iterable, Sequence
 from trader.core.events import Tick
 from trader.data.bar_builder import BarBuilder
 from trader.data.pipeline import DataStreamer
+from trader.exec.metatrader import MetaTraderBroker
 
-import MetaTrader5 as mt5
 
 @dataclass
 class MetaTraderLiveStreamer:
     """
     Polls MetaTrader 5 ticks for the given symbols, aggregates them into bars, and
-    forwards completed bars into a DataStreamer.
+    forwards completed bars into a DataStreamer. Shares a broker session with the order router.
     """
 
+    broker: MetaTraderBroker
     streamer: DataStreamer
-    login: int | None = None
-    password: str | None = None
-    server: str | None = None
-    path: str | None = None
     bar_seconds: int = 60
     poll_interval: float = 1.0
     max_batch: int = 500
     lookback_sec: int = 5
+    shutdown_broker_on_close: bool = False
 
-    _mt5: Any = field(init=False, default=None, repr=False)
     _stopped: bool = field(init=False, default=False, repr=False)
-
-    def connect(self) -> MetaTraderLiveStreamer:
-        initialized = mt5.initialize( # type: ignore
-            path=self.path,
-            login=self.login,
-            password=self.password,
-            server=self.server,
-        )
-        if not initialized:
-            code, msg = mt5.last_error() # type: ignore
-            raise RuntimeError(f"MetaTrader5 initialize failed: [{code}] {msg}")
-
-        self._mt5 = mt5
-        return self
 
     def stop(self) -> None:
         self._stopped = True
 
-    def _shutdown(self) -> None:
-        if self._mt5:
-            try:
-                self._mt5.shutdown()
-            except Exception:
-                pass
-        self._mt5 = None
+    def _mt5(self):
+        return self.broker.mt5
 
     def _select_symbols(self, symbols: Iterable[str]) -> None:
-        assert self._mt5 is not None
+        mt5 = self._mt5()
         for sym in symbols:
-            if not self._mt5.symbol_select(sym, True):
-                code, msg = self._mt5.last_error()
+            if not mt5.symbol_select(sym, True):
+                code, msg = mt5.last_error()
                 raise RuntimeError(f"Failed to select symbol {sym}: [{code}] {msg}")
 
     @staticmethod
@@ -78,11 +56,11 @@ class MetaTraderLiveStreamer:
         """
         Start polling ticks for `symbols` and emitting completed bars to the DataStreamer.
         """
-        if self._mt5 is None:
-            self.connect()
+        self.broker.ensure_connected()
 
         symbols = list(dict.fromkeys(symbols))  # de-dup while preserving order
         self._select_symbols(symbols)
+        mt5 = self._mt5()
 
         builder = BarBuilder(bar_seconds=self.bar_seconds)
         last_seen_ms = {sym: 0 for sym in symbols}
@@ -94,9 +72,9 @@ class MetaTraderLiveStreamer:
             while not self._stopped:
                 for sym in symbols:
                     frm = from_times[sym].replace(tzinfo=None)
-                    ticks = self._mt5.copy_ticks_from(sym, frm, self.max_batch, self._mt5.COPY_TICKS_ALL)
+                    ticks = mt5.copy_ticks_from(sym, frm, self.max_batch, mt5.COPY_TICKS_ALL)
                     if ticks is None:
-                        code, msg = self._mt5.last_error()
+                        code, msg = mt5.last_error()
                         raise RuntimeError(f"copy_ticks_from failed for {sym}: [{code}] {msg}")
                     if len(ticks) == 0:
                         continue
@@ -153,13 +131,18 @@ class MetaTraderLiveStreamer:
                     }
                 )
             self.streamer.close()
-            self._shutdown()
+            if self.shutdown_broker_on_close:
+                try:
+                    self.broker.shutdown()
+                except Exception:
+                    pass
 
 
 async def stream_metatrader_ticks(
     symbols: Sequence[str],
     streamer: DataStreamer,
     *,
+    broker: MetaTraderBroker | None = None,
     login: int | None = None,
     password: str | None = None,
     server: str | None = None,
@@ -168,19 +151,27 @@ async def stream_metatrader_ticks(
     poll_interval: float = 1.0,
     max_batch: int = 500,
     lookback_sec: int = 5,
+    shutdown_broker_on_close: bool | None = None,
 ) -> None:
     """
     Convenience entrypoint to start streaming MetaTrader 5 ticks as bars.
+    If no broker is supplied, one will be created (and optionally shut down on exit).
     """
-    mt_streamer = MetaTraderLiveStreamer(
-        streamer,
+    brk = broker or MetaTraderBroker(
         login=login,
         password=password,
         server=server,
         path=path,
+    )
+    shutdown_flag = shutdown_broker_on_close if shutdown_broker_on_close is not None else broker is None
+
+    mt_streamer = MetaTraderLiveStreamer(
+        broker=brk,
+        streamer=streamer,
         bar_seconds=bar_seconds,
         poll_interval=poll_interval,
         max_batch=max_batch,
         lookback_sec=lookback_sec,
+        shutdown_broker_on_close=shutdown_flag,
     )
     await mt_streamer.stream_ticks_to_bars(symbols)

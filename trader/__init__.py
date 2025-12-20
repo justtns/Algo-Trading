@@ -5,6 +5,7 @@ Exposes data pipeline helpers, TradeRunner, routing, and portfolio store.
 
 from trader.data.pipeline import DataHandler, DataNormalizer, DataStreamer, StreamingOHLCVFeed, DataPackage
 from trader.data.metatrader_stream import MetaTraderLiveStreamer, stream_metatrader_ticks
+from trader.exec.metatrader import MetaTraderBroker, build_metatrader_router
 from trader.exec.traderunner import (
     TradeRunner,
     TradeRunnerBuilder,
@@ -24,6 +25,8 @@ __all__ = [
     "DataPackage",
     "MetaTraderLiveStreamer",
     "stream_metatrader_ticks",
+    "MetaTraderBroker",
+    "build_metatrader_router",
     "TradeRunner",
     "TradeRunnerBuilder",
     "TradeRunnerPool",
