@@ -16,6 +16,9 @@ dependencies = [
 notebooks = [
     "nbformat>=5.9",
 ]
+metatrader = [
+    "MetaTrader5>=5.0",
+]
 
 [build-system]
 requires = ["setuptools>=61"]

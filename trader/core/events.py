@@ -13,11 +13,11 @@ from typing import Any, Optional
 class Tick:
     ts: datetime
     symbol: str
-    bid: float
-    ask: float
-    last: Optional[float] = None
-    size: Optional[float] = None
-    venue: Optional[str] = None
+    bid: float | None  
+    ask: float | None  
+    last: float | None  
+    size: float | None
+    venue: str
 
 
 @dataclass

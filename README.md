@@ -24,7 +24,7 @@ tests/            # demo notebook
    - `trader.data.bar_builder` turns ticks into bars with consistent rules.  
    - Optional FX inversion to keep account in a base currency (RunnerConfig).  
    - Historical pulls via `trader.data.ibkr_stream.IBKRHistoryService` (wraps `historical_data_services/ibkr_data_fetch.py`).
-   - Live streams: `trader.data.ibkr_stream.IBKRLiveStreamer` (ib_insync real-time bars) and `trader.data.ctrader_stream.stream_ctrader_quotes` (bridge your cTrader quote source into `DataStreamer` via the `BarBuilder`).
+   - Live streams: `trader.data.ibkr_stream.IBKRLiveStreamer` (ib_insync real-time bars), `trader.data.ctrader_stream.stream_ctrader_quotes` (bridge your cTrader quote source into `DataStreamer` via the `BarBuilder`), and `trader.data.metatrader_stream.MetaTraderLiveStreamer` (poll ticks from an MT5 terminal and roll them into bars).
 
 2) **Strategy**  
    - User strategies in `trader.strategy` (e.g., `GotobiBT`), shared features/signals in `features.py` / `signals.py`.
