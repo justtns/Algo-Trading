@@ -1,9 +1,9 @@
 ## TODO (wiring the full live stack)
 - **Finalize live feed adapters**
   - IBKR: finish the `trader.data.ibkr_stream.IBKRLiveStreamer` wiring (token/env config, account selection, bar size) and test it end-to-end with `DataStreamer` and the `BarBuilder`.
-  - cTrader: connect your quote source to `trader.data.ctrader_stream.stream_ctrader_quotes`, ensuring symbols and timezones match your `contracts.json` entries.
+  - cTrader: connect your quote source to `trader.data.ctrader_stream.stream_ctrader_quotes`, ensuring symbols and timezones match your `contracts.json` entries. # Changed to metatrader
 - **Unify feed normalization**
-  - Make sure both IBKR and cTrader produce identical `OHLCV` tuples by running them through `trader.data.bar_builder.BarBuilder` with matching bar sizes and through `trader.data.pipeline.DataNormalizer` if currency inversion is needed.
+  - Make sure both IBKR and cTrader produce identical `OHLCV` tuples by running them through `trader.data.bar_builder.BarBuilder` with matching bar sizes and through `trader.data. pipeline.DataNormalizer` if currency inversion is needed. # Changed to metatrader
 - **Execution and routing**
   - Confirm the `trader.exec.router.OrderRouter` risk checks and sizing (`trader.exec.risk.RiskManager`) align with your margin rules; add broker-specific senders for production.
 - **Persistence layer**
