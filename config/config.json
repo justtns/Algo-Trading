@@ -11,6 +11,7 @@
   "trading": {
     "base_currency": "USD",
     "default_contract_size_fx": 100000,
+    "comment_contract_size": "100000 represents a standard FX lot (100,000 units of base currency)",
     "max_position": null,
     "max_notional": null,
     "risk_fraction": 0.01,

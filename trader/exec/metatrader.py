@@ -3,6 +3,7 @@ MetaTrader 5 broker sender wired for OrderRouter and shareable with streaming.
 """
 from __future__ import annotations
 
+import warnings
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -72,7 +73,6 @@ class MetaTraderBroker:
                 self._mt5.shutdown()
             except Exception as e:
                 # Log the error but still mark as disconnected
-                import warnings
                 warnings.warn(f"Error during MetaTrader5 shutdown: {e}")
         self._connected = False
 

@@ -63,9 +63,12 @@ class SystemConfig:
         mt_dict = config_dict.get("metatrader", {})
         mt_dict.pop("comment", None)  # Remove comment field if present
         
+        trading_dict = config_dict.get("trading", {})
+        trading_dict.pop("comment_contract_size", None)  # Remove comment field if present
+        
         return cls(
             metatrader=MetaTraderConfig(**mt_dict),
-            trading=TradingConfig(**config_dict.get("trading", {})),
+            trading=TradingConfig(**trading_dict),
             streaming=StreamingConfig(**config_dict.get("streaming", {})),
             backtest=BacktestConfig(**config_dict.get("backtest", {})),
         )
@@ -98,6 +101,7 @@ class SystemConfig:
             "trading": {
                 "base_currency": self.trading.base_currency,
                 "default_contract_size_fx": self.trading.default_contract_size_fx,
+                "comment_contract_size": "100000 represents a standard FX lot (100,000 units of base currency)",
                 "max_position": self.trading.max_position,
                 "max_notional": self.trading.max_notional,
                 "risk_fraction": self.trading.risk_fraction,
