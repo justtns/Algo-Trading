@@ -1,0 +1,31 @@
+{
+  "metatrader": {
+    "login": null,
+    "password": null,
+    "server": null,
+    "path": null,
+    "comment": "Set login, password, and server for remote MetaTrader 5 connections. Leave null for local terminal connections.",
+    "deviation": 20,
+    "magic": 0
+  },
+  "trading": {
+    "base_currency": "USD",
+    "default_contract_size_fx": 100000,
+    "max_position": null,
+    "max_notional": null,
+    "risk_fraction": 0.01,
+    "stop_loss_pct": null
+  },
+  "streaming": {
+    "bar_seconds": 60,
+    "poll_interval": 1.0,
+    "max_batch": 500,
+    "lookback_sec": 5
+  },
+  "backtest": {
+    "initial_cash": 100000,
+    "commission": 0.0,
+    "leverage": null,
+    "cheat_on_open": false
+  }
+}

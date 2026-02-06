@@ -68,7 +68,8 @@ class BarBuilder:
         px = tick.last or tick.bid or tick.ask
         if px is None:
             return completed
-        state.open = state.open if state.n_ticks > 0 else px
+        if state.n_ticks == 0:
+            state.open = px
         state.high = max(state.high, px)
         state.low = min(state.low, px)
         state.close = px

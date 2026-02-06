@@ -37,5 +37,5 @@ class OrderRouter:
         """
         px = req.price or (last_price if last_price is not None else 0.0)
         self.risk.validate(price=px, size=req.size, cash=req.size * px if px else None)
-        return self.broker_sender(req)
+        return self.broker_sender(req, last_price=last_price)
 

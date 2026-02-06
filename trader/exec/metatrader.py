@@ -44,6 +44,13 @@ class MetaTraderBroker:
             self.connect()
 
     def connect(self) -> None:
+        # Validate credentials if login is provided (required for remote connections)
+        if self.login is not None:
+            if self.password is None:
+                raise ValueError("Password is required when login is specified")
+            if self.server is None:
+                raise ValueError("Server is required when login is specified")
+        
         ok = self._mt5.initialize(
             login=self.login,
             password=self.password,
@@ -63,8 +70,10 @@ class MetaTraderBroker:
         if self._mt5:
             try:
                 self._mt5.shutdown()
-            except Exception:
-                pass
+            except Exception as e:
+                # Log the error but still mark as disconnected
+                import warnings
+                warnings.warn(f"Error during MetaTrader5 shutdown: {e}")
         self._connected = False
 
     @property

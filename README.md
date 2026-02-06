@@ -4,15 +4,16 @@
 
 ```text
 trader/
-  core/           # clocks, event models
-  data/           # streams + normalization (pipeline.py), bar builder, store, IBKR adapter
+  core/           # clocks, event models, configuration loader
+  data/           # streams + normalization (pipeline.py), bar builder, store, IBKR/MT5 adapters
   strategy/       # strategies, features, signals (Gotobi lives here)
-  exec/           # TradeRunner, router, risk/reconcile helpers
+  exec/           # TradeRunner, router, risk/reconcile helpers, MetaTrader broker
   portfolio/      # store/book/PnL helpers
   interfaces/     # control surfaces (Telegram/HTTP stubs)
   research/       # notebooks/scripts (e.g., tests/traderunner_demo.ipynb)
-config/           # contract sizing (e.g., contracts.json)
+config/           # system configuration (config.json), contract sizing (contracts.json)
 historical_data_services/  # historical fetch utilities (IBKR, Polygon)
+examples/         # demo scripts for MetaTrader and other integrations
 data/             # sample parquet data (not tracked)
 tests/            # demo notebook
 ```
@@ -49,6 +50,74 @@ tests/            # demo notebook
 1. Install `backtrader` and `pandas`.  
 2. Add repo root to `PYTHONPATH`.  
 3. Run `tests/traderunner_demo.ipynb`: streams the USDJPY parquet via `DataStreamer` queue, runs two `GotobiBT` legs. Trade size is in **contracts** scaled by `config/contracts.json` (default 100k lots). FX inversion keeps account in USD if quote differs.
+
+## MetaTrader 5 Integration
+
+The system includes full MetaTrader 5 support for live trading:
+
+### Setup
+
+1. **Install MetaTrader 5 package:**
+   ```bash
+   pip install MetaTrader5
+   ```
+
+2. **Configure connection:**
+   Edit `config/config.json` with your MT5 credentials:
+   ```json
+   {
+     "metatrader": {
+       "login": 12345678,
+       "password": "your_password",
+       "server": "YourBroker-Server",
+       "path": null
+     }
+   }
+   ```
+   - For local terminal connections, set all credentials to `null`
+   - For remote connections, provide login, password, and server
+
+3. **Run the demo:**
+   ```bash
+   python examples/metatrader_demo.py
+   ```
+
+### Features
+
+- **Connection Management:** Automatic connection handling with credential validation
+- **Live Data Streaming:** Real-time tick data aggregated into OHLCV bars
+- **Order Execution:** Market, limit, and stop orders via `OrderRouter`
+- **Risk Management:** Built-in position and notional limits
+- **Shared Sessions:** Single broker instance for streaming and trading
+
+### Usage Example
+
+```python
+from trader.core.config import SystemConfig
+from trader.exec.metatrader import build_metatrader_router
+from trader.data.metatrader_stream import stream_metatrader_ticks
+from trader.data.pipeline import DataStreamer
+
+# Load configuration
+config = SystemConfig.load("config/config.json")
+
+# Create router for order execution
+router = build_metatrader_router(
+    login=config.metatrader.login,
+    password=config.metatrader.password,
+    server=config.metatrader.server,
+)
+
+# Stream live data
+streamer = DataStreamer()
+await stream_metatrader_ticks(
+    symbols=["EURUSD", "GBPUSD"],
+    streamer=streamer,
+    login=config.metatrader.login,
+    password=config.metatrader.password,
+    server=config.metatrader.server,
+)
+```
 
 ## Notes
 - `backend/__init__.py` is a compatibility shim that re-exports modules from `trader/`.
