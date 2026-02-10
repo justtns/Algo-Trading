@@ -1,23 +1,34 @@
 [project]
 name = "trading-system"
-version = "0.1.0"
-description = "Backtrader-based trading backend with IBKR/FX data helpers and streaming pipelines."
+version = "0.2.0"
+description = "NautilusTrader-based algorithmic trading system with IBKR and MT5 support."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "backtrader>=1.9,<2.0",
+    "nautilus_trader>=1.200",
     "pandas>=2.0,<3.0",
-    "ib-insync>=0.9",
-    "polygon-api-client>=1.13",
-    "pyarrow>=14.0",  # parquet IO
+    "pyarrow>=14.0",
+    "holidays>=0.40",
 ]
 
 [project.optional-dependencies]
-notebooks = [
-    "nbformat>=5.9",
+ibkr = [
+    "nautilus_trader[ibkr]",
 ]
 metatrader = [
     "MetaTrader5>=5.0",
+]
+polygon = [
+    "polygon-api-client>=1.13",
+]
+notebooks = [
+    "nbformat>=5.9",
+    "jupyterlab>=4.0",
+    "plotly>=5.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
 ]
 
 [build-system]
