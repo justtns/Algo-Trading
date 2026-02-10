@@ -10,6 +10,7 @@ import asyncio
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional, Sequence
 
+from nautilus_trader.data.messages import SubscribeBars, UnsubscribeBars
 from nautilus_trader.config import LiveDataClientConfig
 from nautilus_trader.live.data_client import LiveMarketDataClient
 from nautilus_trader.model.data import Bar, BarType
@@ -17,6 +18,7 @@ from nautilus_trader.model.identifiers import ClientId, Venue
 from nautilus_trader.model.objects import Price, Quantity
 
 from trader.adapters.metatrader.common import MetaTrader5Config, MetaTrader5Connection
+from trader.adapters.metatrader.provider import MetaTrader5InstrumentProvider
 from trader.core.constants import MT5
 from trader.core.events import Tick
 from trader.data.bar_builder import BarBuilder
@@ -50,14 +52,6 @@ class MetaTrader5DataClient(LiveMarketDataClient):
         config: MetaTrader5DataClientConfig,
         connection: MetaTrader5Connection | None = None,
     ):
-        super().__init__(
-            loop=loop,
-            client_id=client_id,
-            venue=venue,
-            msgbus=msgbus,
-            cache=cache,
-            clock=clock,
-        )
         mt5_config = MetaTrader5Config(
             login=config.mt5_login,
             password=config.mt5_password,
@@ -65,6 +59,19 @@ class MetaTrader5DataClient(LiveMarketDataClient):
             path=config.mt5_path,
         )
         self._connection = connection or MetaTrader5Connection(mt5_config)
+        instrument_provider = MetaTrader5InstrumentProvider(
+            connection=self._connection,
+            venue=venue,
+        )
+        super().__init__(
+            loop=loop,
+            client_id=client_id,
+            venue=venue,
+            msgbus=msgbus,
+            cache=cache,
+            clock=clock,
+            instrument_provider=instrument_provider,
+        )
         self._bar_seconds = config.bar_seconds
         self._poll_interval = config.poll_interval
         self._max_batch = config.max_batch
@@ -88,7 +95,8 @@ class MetaTrader5DataClient(LiveMarketDataClient):
         self._connection.shutdown()
         self._log.info("MetaTrader5 data client disconnected")
 
-    async def _subscribe_bars(self, bar_type: BarType) -> None:
+    async def _subscribe_bars(self, command: SubscribeBars) -> None:
+        bar_type = command.bar_type
         symbol = bar_type.instrument_id.symbol.value
         if symbol in self._poll_tasks:
             return
@@ -104,7 +112,8 @@ class MetaTrader5DataClient(LiveMarketDataClient):
         self._poll_tasks[symbol] = task
         self._log.info(f"Subscribed to bars for {symbol}")
 
-    async def _unsubscribe_bars(self, bar_type: BarType) -> None:
+    async def _unsubscribe_bars(self, command: UnsubscribeBars) -> None:
+        bar_type = command.bar_type
         symbol = bar_type.instrument_id.symbol.value
         task = self._poll_tasks.pop(symbol, None)
         if task:
@@ -118,12 +127,14 @@ class MetaTrader5DataClient(LiveMarketDataClient):
         """
         mt5 = self._connection.mt5
         last_seen_ms = 0
-        from_time = datetime.now(timezone.utc) - timedelta(seconds=self._lookback_sec)
+        primed = False
 
         try:
             while True:
-                frm = from_time.replace(tzinfo=None)
-                ticks = mt5.copy_ticks_from(symbol, frm, self._max_batch, mt5.COPY_TICKS_ALL)
+                # Always query a recent sliding window to avoid drifting the cursor
+                # through historical/future-stamped tick data.
+                query_from = datetime.now(timezone.utc) - timedelta(seconds=self._lookback_sec)
+                ticks = mt5.copy_ticks_from(symbol, query_from, self._max_batch, mt5.COPY_TICKS_ALL)
 
                 if ticks is None:
                     code, msg = mt5.last_error()
@@ -137,6 +148,18 @@ class MetaTrader5DataClient(LiveMarketDataClient):
                     has_bid = "bid" in ticks.dtype.names
                     has_ask = "ask" in ticks.dtype.names
                     has_last = "last" in ticks.dtype.names
+
+                    if not primed:
+                        latest_tick = ticks[-1]
+                        latest_ms = (
+                            int(latest_tick["time_msc"])
+                            if has_time_msc
+                            else int(float(latest_tick["time"]) * 1000)
+                        )
+                        last_seen_ms = max(last_seen_ms, latest_ms)
+                        primed = True
+                        await asyncio.sleep(self._poll_interval)
+                        continue
 
                     for tick in ticks:
                         ts_ms = int(tick["time_msc"]) if has_time_msc else int(float(tick["time"]) * 1000)
@@ -160,9 +183,6 @@ class MetaTrader5DataClient(LiveMarketDataClient):
                         completed = self._bar_builder.on_tick(tick_obj)
                         for bar_evt in completed:
                             self._publish_bar(bar_evt, bar_type)
-
-                    if last_seen_ms:
-                        from_time = datetime.fromtimestamp(last_seen_ms / 1000.0, tz=timezone.utc)
 
                 await asyncio.sleep(self._poll_interval)
 

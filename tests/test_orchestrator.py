@@ -27,7 +27,6 @@ def test_orchestrator_allocate_and_build():
             config_kwargs={
                 "instrument_id": "USD/JPY.SIM",
                 "bar_type": "USD/JPY.SIM-1-MINUTE-MID-EXTERNAL",
-                "contract_size": 100_000,
             },
             allocation_spec=StrategyAllocationSpec(
                 strategy_name="gotobi",
@@ -46,7 +45,6 @@ def test_orchestrator_allocate_and_build():
             config_kwargs={
                 "instrument_id": "EUR/USD.SIM",
                 "bar_type": "EUR/USD.SIM-1-MINUTE-MID-EXTERNAL",
-                "contract_size": 100_000,
             },
             allocation_spec=StrategyAllocationSpec(
                 strategy_name="breakout",
@@ -93,7 +91,6 @@ def test_from_yaml_loads_strategies(tmp_path):
                 config:
                   instrument_id: "USD/JPY.SIM"
                   bar_type: "USD/JPY.SIM-1-MINUTE-MID-EXTERNAL"
-                  contract_size: 100000
 
               - name: breakout_test
                 strategy: BreakoutStrategy
@@ -104,7 +101,6 @@ def test_from_yaml_loads_strategies(tmp_path):
                 config:
                   instrument_id: "EUR/USD.SIM"
                   bar_type: "EUR/USD.SIM-1-MINUTE-MID-EXTERNAL"
-                  contract_size: 100000
             """
         )
     )
@@ -137,7 +133,6 @@ def test_from_yaml_with_accounts(tmp_path):
                 config:
                   instrument_id: "USD/JPY.MT5"
                   bar_type: "USD/JPY.MT5-1-MINUTE-MID-EXTERNAL"
-                  contract_size: 100000
             """
         )
     )
@@ -198,7 +193,6 @@ def test_from_yaml_capital_based_strategy(tmp_path):
                 config:
                   instrument_id: "AAPL.IDEALPRO"
                   bar_type: "AAPL.IDEALPRO-1-MINUTE-LAST-EXTERNAL"
-                  contract_size: 1
             """
         )
     )

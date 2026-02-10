@@ -19,6 +19,7 @@ from trader.strategy.gotobi import GotobiStrategy, GotobiConfig, GotobiWithSLStr
 from trader.strategy.mean_reversion import MeanReversionStrategy, MeanReversionConfig
 from trader.strategy.breakout import BreakoutStrategy, BreakoutConfig
 from trader.strategy.rsi_macd_ma import RsiMacdMaStrategy, RsiMacdMaConfig
+from trader.strategy.buy_and_hold import OneMinuteBuyHoldStrategy, OneMinuteBuyHoldConfig
 from trader.strategy.common import GotobiCalendar
 
 __all__ = [
@@ -65,5 +66,7 @@ __all__ = [
     "BreakoutConfig",
     "RsiMacdMaStrategy",
     "RsiMacdMaConfig",
+    "OneMinuteBuyHoldStrategy",
+    "OneMinuteBuyHoldConfig",
     "GotobiCalendar",
 ]

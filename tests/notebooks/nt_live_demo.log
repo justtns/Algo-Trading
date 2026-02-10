@@ -1,0 +1,199 @@
+2026-02-10T18:31:18.112720800Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.112734100Z [INFO] TRADER-001.TradingNode:  NAUTILUS TRADER - Automated Algorithmic Trading Platform
+2026-02-10T18:31:18.112734700Z [INFO] TRADER-001.TradingNode:  by Nautech Systems Pty Ltd.
+2026-02-10T18:31:18.112735200Z [INFO] TRADER-001.TradingNode:  Copyright (C) 2015-2025. All rights reserved.
+2026-02-10T18:31:18.112735700Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.112736100Z [INFO] TRADER-001.TradingNode: 
+2026-02-10T18:31:18.112736500Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+2026-02-10T18:31:18.112736900Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣾⣿⣿⣿⠀⢸⣿⣿⣿⣿⣶⣶⣤⣀⠀⠀⠀⠀⠀
+2026-02-10T18:31:18.112737100Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⢀⣴⡇⢀⣾⣿⣿⣿⣿⣿⠀⣾⣿⣿⣿⣿⣿⣿⣿⠿⠓⠀⠀⠀⠀
+2026-02-10T18:31:18.112737500Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⣰⣿⣿⡀⢸⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⣿⣿⣿⠟⠁⣠⣄⠀⠀⠀⠀
+2026-02-10T18:31:18.112737900Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⢠⣿⣿⣿⣇⠀⢿⣿⣿⣿⣿⣿⠀⢻⣿⣿⣿⡿⢃⣠⣾⣿⣿⣧⡀⠀⠀
+2026-02-10T18:31:18.112738100Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠠⣾⣿⣿⣿⣿⣿⣧⠈⠋⢀⣴⣧⠀⣿⡏⢠⡀⢸⣿⣿⣿⣿⣿⣿⣿⡇⠀
+2026-02-10T18:31:18.112738600Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⣀⠙⢿⣿⣿⣿⣿⣿⠇⢠⣿⣿⣿⡄⠹⠃⠼⠃⠈⠉⠛⠛⠛⠛⠛⠻⠇⠀
+2026-02-10T18:31:18.112738800Z [INFO] TRADER-001.TradingNode: ⠀⠀⢸⡟⢠⣤⠉⠛⠿⢿⣿⠀⢸⣿⡿⠋⣠⣤⣄⠀⣾⣿⣿⣶⣶⣶⣦⡄⠀⠀⠀
+2026-02-10T18:31:18.112739200Z [INFO] TRADER-001.TradingNode: ⠀⠀⠸⠀⣾⠏⣸⣷⠂⣠⣤⠀⠘⢁⣴⣾⣿⣿⣿⡆⠘⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+2026-02-10T18:31:18.112741100Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠛⠀⣿⡟⠀⢻⣿⡄⠸⣿⣿⣿⣿⣿⣿⣿⡀⠘⣿⣿⣿⣿⠟⠀⠀⠀⠀
+2026-02-10T18:31:18.112741400Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⢻⡿⠀⠈⠻⣿⣿⣿⣿⣿⡇⠀⢹⣿⠿⠋⠀⠀⠀⠀⠀
+2026-02-10T18:31:18.112741700Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠋⠀⠀⠀⡘⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀
+2026-02-10T18:31:18.112742000Z [INFO] TRADER-001.TradingNode: 
+2026-02-10T18:31:18.112742200Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.112742500Z [INFO] TRADER-001.TradingNode:  SYSTEM SPECIFICATION
+2026-02-10T18:31:18.112742900Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.112743900Z [INFO] TRADER-001.TradingNode: CPU architecture: AMD Ryzen 5 7600X 6-Core Processor             
+2026-02-10T18:31:18.112744900Z [INFO] TRADER-001.TradingNode: CPU(s): 12 @ 4701 Mhz
+2026-02-10T18:31:18.112745800Z [INFO] TRADER-001.TradingNode: OS: kernel-26200 Windows 11 Home
+2026-02-10T18:31:18.201717100Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.201726800Z [INFO] TRADER-001.TradingNode:  MEMORY USAGE
+2026-02-10T18:31:18.201727300Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.201732200Z [INFO] TRADER-001.TradingNode: RAM-Total: 31.12 GiB
+2026-02-10T18:31:18.201734500Z [INFO] TRADER-001.TradingNode: RAM-Used: 20.77 GiB (66.76%)
+2026-02-10T18:31:18.201735000Z [INFO] TRADER-001.TradingNode: RAM-Avail: 10.34 GiB (33.24%)
+2026-02-10T18:31:18.201736300Z [INFO] TRADER-001.TradingNode: Swap-Total: 15.79 GiB
+2026-02-10T18:31:18.201739500Z [INFO] TRADER-001.TradingNode: Swap-Used: 7.41 GiB (46.90%)
+2026-02-10T18:31:18.201740200Z [INFO] TRADER-001.TradingNode: Swap-Avail: 8.38 GiB (53.10%)
+2026-02-10T18:31:18.202601800Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.202604700Z [INFO] TRADER-001.TradingNode:  IDENTIFIERS
+2026-02-10T18:31:18.202605100Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.202605700Z [INFO] TRADER-001.TradingNode: trader_id: TRADER-001
+2026-02-10T18:31:18.202606100Z [INFO] TRADER-001.TradingNode: machine_id: Justin
+2026-02-10T18:31:18.202607300Z [INFO] TRADER-001.TradingNode: instance_id: 450c45e0-7431-42a9-a7da-2157ec55fdec
+2026-02-10T18:31:18.202607700Z [INFO] TRADER-001.TradingNode: PID: 65948
+2026-02-10T18:31:18.202607900Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.202608100Z [INFO] TRADER-001.TradingNode:  VERSIONING
+2026-02-10T18:31:18.202608300Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.202641800Z [INFO] TRADER-001.TradingNode: nautilus_trader: 1.221.0
+2026-02-10T18:31:18.202656100Z [INFO] TRADER-001.TradingNode: python: 3.11.14
+2026-02-10T18:31:18.202659300Z [INFO] TRADER-001.TradingNode: numpy: 2.4.2
+2026-02-10T18:31:18.202662000Z [INFO] TRADER-001.TradingNode: pandas: 2.3.3
+2026-02-10T18:31:18.202664700Z [INFO] TRADER-001.TradingNode: msgspec: 0.20.0
+2026-02-10T18:31:18.202666800Z [INFO] TRADER-001.TradingNode: pyarrow: 23.0.0
+2026-02-10T18:31:18.202669100Z [INFO] TRADER-001.TradingNode: pytz: 2025.2
+2026-02-10T18:31:18.203206600Z [INFO] TRADER-001.TradingNode: uvloop: Unavailable (failed to import package)
+2026-02-10T18:31:18.203210800Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:31:18.204157200Z [INFO] TRADER-001.TradingNode: Building system kernel
+2026-02-10T18:31:18.204325400Z [INFO] TRADER-001.MessageBus: config.database=None
+2026-02-10T18:31:18.204330400Z [INFO] TRADER-001.MessageBus: config.encoding='msgpack'
+2026-02-10T18:31:18.204331700Z [INFO] TRADER-001.MessageBus: config.timestamps_as_iso8601=False
+2026-02-10T18:31:18.204332500Z [INFO] TRADER-001.MessageBus: config.buffer_interval_ms=None
+2026-02-10T18:31:18.204333700Z [INFO] TRADER-001.MessageBus: config.autotrim_mins=None
+2026-02-10T18:31:18.204334800Z [INFO] TRADER-001.MessageBus: config.use_trader_prefix=True
+2026-02-10T18:31:18.204335600Z [INFO] TRADER-001.MessageBus: config.use_trader_id=True
+2026-02-10T18:31:18.204336400Z [INFO] TRADER-001.MessageBus: config.use_instance_id=False
+2026-02-10T18:31:18.204338100Z [INFO] TRADER-001.MessageBus: config.streams_prefix='stream'
+2026-02-10T18:31:18.204338900Z [INFO] TRADER-001.MessageBus: config.types_filter=None
+2026-02-10T18:31:18.204390800Z [INFO] TRADER-001.Cache: READY
+2026-02-10T18:31:18.204873300Z [INFO] TRADER-001.DataEngine: READY
+2026-02-10T18:31:18.204989400Z [INFO] TRADER-001.DataEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:31:18.205017600Z [INFO] TRADER-001.RiskEngine: READY
+2026-02-10T18:31:18.205037900Z [INFO] TRADER-001.RiskEngine: TradingState is ACTIVE
+2026-02-10T18:31:18.205120500Z [INFO] TRADER-001.Throttler-ORDER_SUBMIT_THROTTLER: READY
+2026-02-10T18:31:18.205146700Z [INFO] TRADER-001.RiskEngine: Set MAX_ORDER_SUBMIT_RATE: 100/00:00:01
+2026-02-10T18:31:18.205161900Z [INFO] TRADER-001.Throttler-ORDER_MODIFY_THROTTLER: READY
+2026-02-10T18:31:18.205167600Z [INFO] TRADER-001.RiskEngine: Set MAX_ORDER_MODIFY_RATE: 100/00:00:01
+2026-02-10T18:31:18.205196400Z [INFO] TRADER-001.RiskEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:31:18.205241900Z [INFO] TRADER-001.ExecEngine: READY
+2026-02-10T18:31:18.205278500Z [INFO] TRADER-001.ExecEngine: config.snapshot_orders=False
+2026-02-10T18:31:18.205281100Z [INFO] TRADER-001.ExecEngine: config.snapshot_positions=False
+2026-02-10T18:31:18.205281900Z [INFO] TRADER-001.ExecEngine: config.snapshot_positions_interval_secs=None
+2026-02-10T18:31:18.205337000Z [INFO] TRADER-001.ExecEngine: config.reconciliation=False
+2026-02-10T18:31:18.205339500Z [INFO] TRADER-001.ExecEngine: config.reconciliation_lookback_mins=None
+2026-02-10T18:31:18.205340100Z [INFO] TRADER-001.ExecEngine: config.reconciliation_instrument_ids=None
+2026-02-10T18:31:18.205341100Z [INFO] TRADER-001.ExecEngine: config.filter_unclaimed_external_orders=False
+2026-02-10T18:31:18.205341900Z [INFO] TRADER-001.ExecEngine: config.filter_position_reports=False
+2026-02-10T18:31:18.205342400Z [INFO] TRADER-001.ExecEngine: config.filtered_client_order_ids=None
+2026-02-10T18:31:18.205343000Z [INFO] TRADER-001.ExecEngine: config.inflight_check_interval_ms=2000
+2026-02-10T18:31:18.205343600Z [INFO] TRADER-001.ExecEngine: config.inflight_check_threshold_ms=5000
+2026-02-10T18:31:18.205344200Z [INFO] TRADER-001.ExecEngine: config.inflight_check_retries=5
+2026-02-10T18:31:18.205344700Z [INFO] TRADER-001.ExecEngine: config.own_books_audit_interval_secs=None
+2026-02-10T18:31:18.205345300Z [INFO] TRADER-001.ExecEngine: config.open_check_interval_secs=None
+2026-02-10T18:31:18.205345800Z [INFO] TRADER-001.ExecEngine: config.open_check_open_only=True
+2026-02-10T18:31:18.205346300Z [INFO] TRADER-001.ExecEngine: config.open_check_lookback_mins=60
+2026-02-10T18:31:18.205346800Z [INFO] TRADER-001.ExecEngine: config.open_check_threshold_ms=5000
+2026-02-10T18:31:18.205347200Z [INFO] TRADER-001.ExecEngine: config.open_check_missing_retries=5
+2026-02-10T18:31:18.205348100Z [INFO] TRADER-001.ExecEngine: config.max_single_order_queries_per_cycle=10
+2026-02-10T18:31:18.205348500Z [INFO] TRADER-001.ExecEngine: config.single_order_query_delay_ms=100
+2026-02-10T18:31:18.205350800Z [INFO] TRADER-001.ExecEngine: config.reconciliation_startup_delay_secs=10.0
+2026-02-10T18:31:18.205351400Z [INFO] TRADER-001.ExecEngine: config.purge_closed_orders_interval_mins=None
+2026-02-10T18:31:18.205352200Z [INFO] TRADER-001.ExecEngine: config.purge_closed_orders_buffer_mins=None
+2026-02-10T18:31:18.205352700Z [INFO] TRADER-001.ExecEngine: config.purge_closed_positions_interval_mins=None
+2026-02-10T18:31:18.205353100Z [INFO] TRADER-001.ExecEngine: config.purge_closed_positions_buffer_mins=None
+2026-02-10T18:31:18.205353500Z [INFO] TRADER-001.ExecEngine: config.purge_account_events_interval_mins=None
+2026-02-10T18:31:18.205354100Z [INFO] TRADER-001.ExecEngine: config.purge_account_events_lookback_mins=None
+2026-02-10T18:31:18.205354500Z [INFO] TRADER-001.ExecEngine: config.purge_from_database=False
+2026-02-10T18:31:18.205354900Z [INFO] TRADER-001.ExecEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:31:18.205411000Z [INFO] TRADER-001.Cache: Cached 0 general objects from database
+2026-02-10T18:31:18.205416600Z [INFO] TRADER-001.Cache: Cached 0 currencies from database
+2026-02-10T18:31:18.205419100Z [INFO] TRADER-001.Cache: Cached 0 instruments from database
+2026-02-10T18:31:18.205424000Z [INFO] TRADER-001.Cache: Cached 0 accounts from database
+2026-02-10T18:31:18.205433400Z [INFO] TRADER-001.Cache: Cached 0 orders from database
+2026-02-10T18:31:18.205436800Z [INFO] TRADER-001.Cache: Cached 0 order lists from database
+2026-02-10T18:31:18.205440000Z [INFO] TRADER-001.Cache: Cached 0 positions from database
+2026-02-10T18:31:18.205456400Z [INFO] TRADER-001.Cache: Checking data integrity
+2026-02-10T18:31:18.205471400Z [INFO] TRADER-001.Cache: Integrity check passed in 0μs
+2026-02-10T18:31:18.205498900Z [INFO] TRADER-001.ExecEngine: Loaded cache in 0ms
+2026-02-10T18:31:18.205545700Z [INFO] TRADER-001.OrderEmulator: READY
+2026-02-10T18:31:18.205595400Z [INFO] TRADER-001.TRADER-001: READY
+2026-02-10T18:31:18.205616700Z [INFO] TRADER-001.TradingNode: Initialized in 309ms
+2026-02-10T18:31:18.205634700Z [INFO] TRADER-001.TradingNode: has_cache_backing=False
+2026-02-10T18:31:18.205635300Z [INFO] TRADER-001.TradingNode: has_msgbus_backing=False
+2026-02-10T18:31:18.205791700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: READY
+2026-02-10T18:31:18.205849400Z [INFO] TRADER-001.ExecEngine: Registered OMS.UNSPECIFIED for Strategy OneMinuteBuyHoldStrategy-000
+2026-02-10T18:31:18.205854700Z [INFO] TRADER-001.TRADER-001: Registered Strategy OneMinuteBuyHoldStrategy-000
+2026-02-10T18:31:18.205883400Z [INFO] TRADER-001.TradingNode: Building data client for IB
+2026-02-10T18:31:18.205908800Z [INFO] TRADER-001.InteractiveBrokersClient-001: READY
+2026-02-10T18:31:18.206127000Z [INFO] TRADER-001.InteractiveBrokersClient-001: RUNNING
+2026-02-10T18:31:18.206148200Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: READY
+2026-02-10T18:31:18.206194300Z [INFO] TRADER-001.DataClient-IB: READY
+2026-02-10T18:31:18.206220000Z [INFO] TRADER-001.DataEngine: Registered IB for default routing
+2026-02-10T18:31:18.206227900Z [INFO] TRADER-001.TradingNode: Building execution client for IB
+2026-02-10T18:31:18.206271500Z [INFO] TRADER-001.ExecClient-IB: READY
+2026-02-10T18:31:18.206293300Z [INFO] TRADER-001.ExecEngine: Registered ExecutionClient-IB
+2026-02-10T18:31:18.206445000Z [INFO] TRADER-001.InteractiveBrokersClient-001: Starting InteractiveBrokersClient (1)...
+2026-02-10T18:31:18.206463100Z [INFO] TRADER-001.InteractiveBrokersClient-001: Connecting to 127.0.0.1:7497 with client id: 1
+2026-02-10T18:31:18.206829800Z [INFO] TRADER-001.TradingNode: STARTING
+2026-02-10T18:31:18.206878100Z [INFO] TRADER-001.DataClient-IB: RUNNING
+2026-02-10T18:31:18.206897000Z [INFO] TRADER-001.DataEngine: RUNNING
+2026-02-10T18:31:18.206911000Z [INFO] TRADER-001.RiskEngine: RUNNING
+2026-02-10T18:31:18.206921300Z [INFO] TRADER-001.ExecClient-IB: RUNNING
+2026-02-10T18:31:18.206936000Z [INFO] TRADER-001.ExecEngine: Started reconciliation task
+2026-02-10T18:31:18.206940500Z [INFO] TRADER-001.ExecEngine: RUNNING
+2026-02-10T18:31:18.206945300Z [INFO] TRADER-001.DataEngine: Connecting all clients...
+2026-02-10T18:31:18.206947200Z [INFO] TRADER-001.DataClient-IB: Connecting...
+2026-02-10T18:31:18.206957000Z [INFO] TRADER-001.ExecEngine: Connecting all clients...
+2026-02-10T18:31:18.206960000Z [INFO] TRADER-001.ExecClient-IB: Connecting...
+2026-02-10T18:31:18.206968000Z [INFO] TRADER-001.TradingNode: Awaiting engine connections and initializations (60.0s timeout)...
+2026-02-10T18:31:18.207137200Z [INFO] TRADER-001.ExecEngine: Starting continuous reconciliation with intervals: inflight=2000ms, consistency=Nones
+2026-02-10T18:31:18.207141800Z [INFO] TRADER-001.ExecEngine: Startup reconciliation disabled, proceeding with continuous checks
+2026-02-10T18:31:18.236772600Z [INFO] TRADER-001.InteractiveBrokersClient-001: Connected to Interactive Brokers (v187) at 20260211 02:31:17 SGT from 127.0.0.1:7497 with client id: 1
+2026-02-10T18:31:18.251866500Z [INFO] TRADER-001.InteractiveBrokersClient-001: Setting Market DataType to DELAYED_FROZEN
+2026-02-10T18:31:18.251941500Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Initializing instruments...
+2026-02-10T18:31:18.251952300Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Loading instruments: AAPL.NYSE...
+2026-02-10T18:31:18.251992500Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Attempting to find instrument for contract=IBContract(secType='STK', exchange='SMART', primaryExchange='NYSE', localSymbol='AAPL')
+2026-02-10T18:31:18.254048200Z [WARN] TRADER-001.InteractiveBrokersClient-001: Market data farm connection is OK:usfarm.nj (code: 2104, req_id=-1)
+2026-02-10T18:31:18.255176200Z [WARN] TRADER-001.InteractiveBrokersClient-001: Market data farm connection is OK:usfuture (code: 2104, req_id=-1)
+2026-02-10T18:31:18.256550500Z [WARN] TRADER-001.InteractiveBrokersClient-001: Market data farm connection is OK:cashfarm (code: 2104, req_id=-1)
+2026-02-10T18:31:18.256828900Z [WARN] TRADER-001.InteractiveBrokersClient-001: Market data farm connection is OK:usfarm (code: 2104, req_id=-1)
+2026-02-10T18:31:18.257441200Z [WARN] TRADER-001.InteractiveBrokersClient-001: HMDS data farm connection is OK:ushmds (code: 2106, req_id=-1)
+2026-02-10T18:31:18.257807600Z [WARN] TRADER-001.InteractiveBrokersClient-001: Sec-def data farm connection is OK:secdefil (code: 2158, req_id=-1)
+2026-02-10T18:31:18.672936500Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Contract qualified for AAPL.NASDAQ with ConId=265598
+2026-02-10T18:31:18.673281300Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Adding instrument=Equity(id=AAPL.NYSE, raw_symbol=AAPL, asset_class=EQUITY, instrument_class=SPOT, quote_currency=USD, is_inverse=False, price_precision=2, price_increment=0.01, size_precision=0, size_increment=1, multiplier=1, lot_size=100, margin_init=0, margin_maint=0, maker_fee=0, taker_fee=0, info={'contract': {'secType': 'STK', 'conId': 265598, 'exchange': 'SMART', 'primaryExchange': 'NASDAQ', 'symbol': 'AAPL', 'localSymbol': 'AAPL', 'currency': 'USD', 'tradingClass': 'NMS', 'lastTradeDateOrContractMonth': '', 'lastTradeDate': '', 'multiplier': '', 'strike': 0.0, 'right': '', 'includeExpired': False, 'secIdType': '', 'secId': '', 'description': '', 'issuerId': '', 'comboLegsDescrip': '', 'comboLegs': [], 'deltaNeutralContract': None, 'build_futures_chain': None, 'build_options_chain': None, 'options_chain_exchange': None, 'min_expiry_days': None, 'max_expiry_days': None}, 'marketName': 'NMS', 'minTick': 0.01, 'orderTypes': 'ACTIVETIM,AD,ADDONT,ADJUST,ALERT,ALGO,ALLOC,AON,AVGCOST,BASKET,BENCHPX,CASHQTY,COND,CONDORDER,DARKONLY,DARKPOLL,DAY,DEACT,DEACTDIS,DEACTEOD,DIS,DUR,GAT,GTC,GTD,GTT,HID,IBKRATS,ICE,IMB,IOC,LIT,LMT,LOC,MIDPX,MIT,MKT,MOC,MTL,NGCOMB,NODARK,NONALGO,OCA,OPG,OPGREROUT,PEGBENCH,PEGMID,POSTATS,POSTONLY,PREOPGRTH,PRICECHK,REL,REL2MID,RELPCTOFS,RPI,RTH,SCALE,SCALEODD,SCALERST,SIZECHK,SNAPMID,SNAPMKT,SNAPREL,STP,STPLMT,SWEEP,TRAIL,TRAILLIT,TRAILLMT,TRAILMIT,WHATIF', 'validExchanges': 'SMART,AMEX,NYSE,CBOE,PHLX,ISE,CHX,ARCA,NASDAQ,DRCTEDGE,BEX,BATS,EDGEA,BYX,IEX,EDGX,FOXRIVER,PEARL,NYSENAT,LTSE,MEMX,IBEOS,OVERNIGHT,TPLUS0,PSX,T24X', 'priceMagnifier': 1, 'underConId': 0, 'longName': 'APPLE INC', 'contractMonth': '', 'industry': 'Technology', 'category': 'Computers', 'subcategory': 'Computers', 'timeZoneId': 'US/Eastern', 'tradingHours': '20260210:0400-20260210:2000;20260211:0400-20260211:2000;20260212:0400-20260212:2000;20260213:0400-20260213:2000', 'liquidHours': '20260210:0930-20260210:1600;20260211:0930-20260211:1600;20260212:0930-20260212:1600;20260213:0930-20260213:1600', 'evRule': '', 'evMultiplier': 0, 'mdSizeMultiplier': 1, 'aggGroup': 1, 'underSymbol': '', 'underSecType': '', 'marketRuleIds': '26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26', 'secIdList': {'ISIN': 'US0378331005'}, 'realExpirationDate': '', 'lastTradeTime': '', 'stockType': 'COMMON', 'minSize': Decimal('0.0001'), 'sizeIncrement': Decimal('0.0001'), 'suggestedSizeIncrement': Decimal('100'), 'cusip': '', 'ratings': '', 'descAppend': '', 'bondType': '', 'couponType': '', 'callable': False, 'putable': False, 'coupon': 0, 'convertible': False, 'maturity': '', 'issueDate': '', 'nextOptionDate': '', 'nextOptionType': '', 'nextOptionPartial': False, 'notes': '', 'fundName': '', 'fundFamily': '', 'fundType': '', 'fundFrontLoad': '', 'fundBackLoad': '', 'fundBackLoadTimeInterval': '', 'fundManagementFee': '', 'fundClosed': False, 'fundClosedForNewInvestors': False, 'fundClosedForNewMoney': False, 'fundNotifyAmount': '', 'fundMinimumInitialPurchase': '', 'fundSubsequentMinimumPurchase': '', 'fundBlueSkyStates': '', 'fundBlueSkyTerritories': '', 'fundDistributionPolicyIndicator': <FundDistributionPolicyIndicator.NoneItem: ('None', 'None')>, 'fundAssetType': <FundAssetType.NoneItem: ('None', 'None')>, 'ineligibilityReasonList': None}) from InteractiveBrokersInstrumentProvider
+2026-02-10T18:31:18.673304600Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Loaded 1 instruments
+2026-02-10T18:31:18.673305600Z [INFO] TRADER-001.InteractiveBrokersInstrumentProvider: Initialized instruments
+2026-02-10T18:31:18.673390400Z [INFO] TRADER-001.DataClient-IB: Connected
+2026-02-10T18:31:18.705752700Z [INFO] TRADER-001.ExecClient-IB: Account `DUM758689` found in the connected TWS/Gateway
+2026-02-10T18:31:18.942311200Z [INFO] TRADER-001.Portfolio: Updated AccountState(account_id=IB-DUM758689, account_type=MARGIN, base_currency=None, is_reported=True, balances=[AccountBalance(total=1_001_310.07 SGD, locked=0.00 SGD, free=1_001_310.07 SGD)], margins=[MarginBalance(initial=0.00 SGD, maintenance=0.00 SGD, instrument_id=None)], event_id=bbdb3d17-a0d4-4c2f-8925-1dba4b88e30f)
+2026-02-10T18:31:18.942793500Z [INFO] TRADER-001.Portfolio: Updated AccountState(account_id=IB-DUM758689, account_type=MARGIN, base_currency=None, is_reported=True, balances=[AccountBalance(total=1_001_310.07 SGD, locked=0.00 SGD, free=1_001_310.07 SGD)], margins=[MarginBalance(initial=0.00 SGD, maintenance=0.00 SGD, instrument_id=None)], event_id=43b00fac-133b-48cd-9035-251c28894f8b)
+2026-02-10T18:31:18.944259200Z [WARN] TRADER-001.TradingNode: Reconciliation deactivated
+2026-02-10T18:31:18.944283600Z [INFO] TRADER-001.OrderEmulator: No emulated orders to reactivate
+2026-02-10T18:31:18.944300500Z [INFO] TRADER-001.OrderEmulator: RUNNING
+2026-02-10T18:31:18.944316400Z [INFO] TRADER-001.Portfolio: Initialized 0 open orders
+2026-02-10T18:31:18.944324000Z [INFO] TRADER-001.Portfolio: Initialized 0 open positions
+2026-02-10T18:31:18.944330900Z [INFO] TRADER-001.TradingNode: Awaiting portfolio initialization (10.0s timeout)...
+2026-02-10T18:31:18.944362900Z [INFO] TRADER-001.ExecClient-IB: Connected
+2026-02-10T18:31:18.944378600Z [INFO] TRADER-001.TradingNode: Portfolio initialized
+2026-02-10T18:31:18.944395100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.oms_type=None
+2026-02-10T18:31:18.944398500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.external_order_claims=None
+2026-02-10T18:31:18.944399300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.manage_gtd_expiry=False
+2026-02-10T18:31:18.944413000Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Set ClientOrderIdGenerator client_order_id count to 0
+2026-02-10T18:31:18.944415500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Set ClientOrderIdGenerator order_list_id count to 0
+2026-02-10T18:31:18.944499800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> SubscribeBars(bar_type=AAPL.NYSE-15-SECOND-LAST-EXTERNAL, client_id=None, venue=NYSE)
+2026-02-10T18:31:18.944560800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: RUNNING
+2026-02-10T18:31:18.944570700Z [INFO] TRADER-001.TRADER-001: RUNNING
+2026-02-10T18:31:18.944576800Z [INFO] TRADER-001.TradingNode: RUNNING
+2026-02-10T18:31:18.944804700Z [INFO] TRADER-001.InteractiveBrokersClient-001: Creating and registering a new Subscription instance for AAPL.NYSE-15-SECOND-LAST-EXTERNAL
+2026-02-10T18:31:18.944935000Z [INFO] TRADER-001.DataClient-IB: Subscribed AAPL.NYSE-15-SECOND-LAST-EXTERNAL bars
+2026-02-10T18:31:19.667910800Z [ERROR] TRADER-001.InteractiveBrokersClient-001: Historical Market Data Service error message:Trading TWS session is connected from a different IP address (code: 162, req_id=10003)
+2026-02-10T18:31:19.667932300Z [WARN] TRADER-001.InteractiveBrokersClient-001: Unknown subscription error: 162 for req_id 10003
+2026-02-10T18:32:18.383326600Z [INFO] TRADER-001.TradingNode: STOPPING
+2026-02-10T18:32:18.383444100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> UnsubscribeBars(bar_type=AAPL.NYSE-15-SECOND-LAST-EXTERNAL, client_id=None, venue=NYSE)
+2026-02-10T18:32:18.383614100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Unsubscribed from AAPL.NYSE-15-SECOND-LAST-EXTERNAL bar data
+2026-02-10T18:32:18.383629600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Canceling executor tasks
+2026-02-10T18:32:18.383721200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: STOPPED
+2026-02-10T18:32:18.383730400Z [INFO] TRADER-001.TRADER-001: STOPPED
+2026-02-10T18:32:18.383740900Z [INFO] TRADER-001.TradingNode: Awaiting post stop (10.0s timeout)...
+2026-02-10T18:32:18.384093600Z [INFO] TRADER-001.DataClient-IB: Unsubscribed AAPL.NYSE-15-SECOND-LAST-EXTERNAL bars
+2026-02-10T18:32:18.385827300Z [ERROR] TRADER-001.InteractiveBrokersClient-001: No historical data query found for ticker id:10003 (code: 366, req_id=10003)
+2026-02-10T18:32:18.385839000Z [WARN] TRADER-001.InteractiveBrokersClient-001: Unhandled error: 366 for req_id 10003
+2026-02-10T18:32:28.397461200Z [INFO] TRADER-001.DataClient-IB: STOPPED
+2026-02-10T18:32:28.397488400Z [INFO] TRADER-001.ExecClient-IB: STOPPED

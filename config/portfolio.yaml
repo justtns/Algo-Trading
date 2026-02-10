@@ -13,7 +13,6 @@ strategies:
       bar_type: "USD/JPY.MT5-1-MINUTE-MID-EXTERNAL"
       entry_time: "01:30:00"
       exit_time: "08:30:00"
-      contract_size: 100000
 
   - name: breakout_eurusd
     strategy: BreakoutStrategy
@@ -24,7 +23,6 @@ strategies:
     config:
       instrument_id: "EUR/USD.IDEALPRO"
       bar_type: "EUR/USD.IDEALPRO-1-MINUTE-MID-EXTERNAL"
-      contract_size: 100000
 
   - name: equity_mean_rev
     strategy: MeanReversionStrategy
@@ -35,4 +33,3 @@ strategies:
     config:
       instrument_id: "AAPL.IDEALPRO"
       bar_type: "AAPL.IDEALPRO-1-MINUTE-LAST-EXTERNAL"
-      contract_size: 1

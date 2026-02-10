@@ -5,6 +5,7 @@ Loads FX instrument specs from MT5 symbol_info.
 from __future__ import annotations
 
 from typing import Any, Optional, Sequence
+from decimal import Decimal
 
 from nautilus_trader.common.providers import InstrumentProvider
 from nautilus_trader.model.currencies import Currency
@@ -72,6 +73,8 @@ class MetaTrader5InstrumentProvider(InstrumentProvider):
 
         instrument_id = InstrumentId(Symbol(sym_name), self._venue)
 
+        zero = Decimal("0")
+
         return CurrencyPair(
             instrument_id=instrument_id,
             raw_symbol=Symbol(sym_name),
@@ -86,10 +89,10 @@ class MetaTrader5InstrumentProvider(InstrumentProvider):
             min_quantity=Quantity.from_str("0.01"),
             max_price=None,
             min_price=None,
-            margin_init=Money(0, quote_ccy),
-            margin_maint=Money(0, quote_ccy),
-            maker_fee=Money(0, quote_ccy),
-            taker_fee=Money(0, quote_ccy),
+            margin_init=zero,
+            margin_maint=zero,
+            maker_fee=zero,
+            taker_fee=zero,
             ts_event=0,
             ts_init=0,
         )

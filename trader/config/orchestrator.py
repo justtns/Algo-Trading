@@ -34,6 +34,10 @@ def _ensure_registry() -> None:
     )
     from trader.strategy.breakout import BreakoutConfig, BreakoutStrategy
     from trader.strategy.mean_reversion import MeanReversionConfig, MeanReversionStrategy
+    from trader.strategy.buy_and_hold import (
+        OneMinuteBuyHoldConfig,
+        OneMinuteBuyHoldStrategy,
+    )
 
     _STRATEGY_REGISTRY.update(
         {
@@ -41,6 +45,7 @@ def _ensure_registry() -> None:
             "GotobiWithSLStrategy": (GotobiWithSLStrategy, GotobiWithSLConfig),
             "BreakoutStrategy": (BreakoutStrategy, BreakoutConfig),
             "MeanReversionStrategy": (MeanReversionStrategy, MeanReversionConfig),
+            "OneMinuteBuyHoldStrategy": (OneMinuteBuyHoldStrategy, OneMinuteBuyHoldConfig),
         }
     )
 
@@ -110,6 +115,7 @@ class TradingOrchestrator:
         for spec, alloc in zip(self._specs, self._allocations):
             kwargs = dict(spec.config_kwargs)
             kwargs["trade_size"] = alloc.trade_size
+            kwargs.pop("contract_size", None)
             config = spec.config_class(**kwargs)
             strategies.append(spec.strategy_class(config=config))
         return strategies
@@ -171,11 +177,18 @@ class TradingOrchestrator:
                 venue_name=entry.get("venue", "SIM"),
                 margin_rate=float(entry.get("margin_rate", 0.02)),
                 safety_factor=float(entry.get("safety_factor", 1.5)),
-                contract_size=float(entry.get("config", {}).get("contract_size", 100_000)),
+                contract_size=float(
+                    entry.get(
+                        "contract_size",
+                        entry.get("config", {}).get("contract_size", 100_000),
+                    )
+                ),
                 reference_price=entry.get("reference_price"),
             )
 
             config_kwargs = dict(entry.get("config", {}))
+            # Backwards-compat: drop contract_size now that strategies derive lot size from instruments.
+            config_kwargs.pop("contract_size", None)
 
             spec = StrategySpec(
                 strategy_class=strategy_cls,

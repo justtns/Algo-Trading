@@ -1,0 +1,258 @@
+2026-02-10T18:22:19.384204700Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.384213300Z [INFO] TRADER-001.TradingNode:  NAUTILUS TRADER - Automated Algorithmic Trading Platform
+2026-02-10T18:22:19.384213700Z [INFO] TRADER-001.TradingNode:  by Nautech Systems Pty Ltd.
+2026-02-10T18:22:19.384213900Z [INFO] TRADER-001.TradingNode:  Copyright (C) 2015-2025. All rights reserved.
+2026-02-10T18:22:19.384214200Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.384214500Z [INFO] TRADER-001.TradingNode: 
+2026-02-10T18:22:19.384214700Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+2026-02-10T18:22:19.384215000Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣾⣿⣿⣿⠀⢸⣿⣿⣿⣿⣶⣶⣤⣀⠀⠀⠀⠀⠀
+2026-02-10T18:22:19.384215300Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⢀⣴⡇⢀⣾⣿⣿⣿⣿⣿⠀⣾⣿⣿⣿⣿⣿⣿⣿⠿⠓⠀⠀⠀⠀
+2026-02-10T18:22:19.384215500Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⣰⣿⣿⡀⢸⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⣿⣿⣿⠟⠁⣠⣄⠀⠀⠀⠀
+2026-02-10T18:22:19.384215700Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⢠⣿⣿⣿⣇⠀⢿⣿⣿⣿⣿⣿⠀⢻⣿⣿⣿⡿⢃⣠⣾⣿⣿⣧⡀⠀⠀
+2026-02-10T18:22:19.384215800Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠠⣾⣿⣿⣿⣿⣿⣧⠈⠋⢀⣴⣧⠀⣿⡏⢠⡀⢸⣿⣿⣿⣿⣿⣿⣿⡇⠀
+2026-02-10T18:22:19.384215900Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⣀⠙⢿⣿⣿⣿⣿⣿⠇⢠⣿⣿⣿⡄⠹⠃⠼⠃⠈⠉⠛⠛⠛⠛⠛⠻⠇⠀
+2026-02-10T18:22:19.384216100Z [INFO] TRADER-001.TradingNode: ⠀⠀⢸⡟⢠⣤⠉⠛⠿⢿⣿⠀⢸⣿⡿⠋⣠⣤⣄⠀⣾⣿⣿⣶⣶⣶⣦⡄⠀⠀⠀
+2026-02-10T18:22:19.384216300Z [INFO] TRADER-001.TradingNode: ⠀⠀⠸⠀⣾⠏⣸⣷⠂⣠⣤⠀⠘⢁⣴⣾⣿⣿⣿⡆⠘⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+2026-02-10T18:22:19.384217500Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠛⠀⣿⡟⠀⢻⣿⡄⠸⣿⣿⣿⣿⣿⣿⣿⡀⠘⣿⣿⣿⣿⠟⠀⠀⠀⠀
+2026-02-10T18:22:19.384217700Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⢻⡿⠀⠈⠻⣿⣿⣿⣿⣿⡇⠀⢹⣿⠿⠋⠀⠀⠀⠀⠀
+2026-02-10T18:22:19.384217900Z [INFO] TRADER-001.TradingNode: ⠀⠀⠀⠀⠀⠀⠋⠀⠀⠀⡘⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀
+2026-02-10T18:22:19.384218100Z [INFO] TRADER-001.TradingNode: 
+2026-02-10T18:22:19.384218200Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.384218400Z [INFO] TRADER-001.TradingNode:  SYSTEM SPECIFICATION
+2026-02-10T18:22:19.384218600Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.384219100Z [INFO] TRADER-001.TradingNode: CPU architecture: AMD Ryzen 5 7600X 6-Core Processor             
+2026-02-10T18:22:19.384220000Z [INFO] TRADER-001.TradingNode: CPU(s): 12 @ 4701 Mhz
+2026-02-10T18:22:19.384220800Z [INFO] TRADER-001.TradingNode: OS: kernel-26200 Windows 11 Home
+2026-02-10T18:22:19.495705200Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.495716700Z [INFO] TRADER-001.TradingNode:  MEMORY USAGE
+2026-02-10T18:22:19.495717100Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.495722800Z [INFO] TRADER-001.TradingNode: RAM-Total: 31.12 GiB
+2026-02-10T18:22:19.495724900Z [INFO] TRADER-001.TradingNode: RAM-Used: 24.68 GiB (79.31%)
+2026-02-10T18:22:19.495725600Z [INFO] TRADER-001.TradingNode: RAM-Avail: 6.44 GiB (20.69%)
+2026-02-10T18:22:19.495726900Z [INFO] TRADER-001.TradingNode: Swap-Total: 17.73 GiB
+2026-02-10T18:22:19.495730600Z [INFO] TRADER-001.TradingNode: Swap-Used: 15.34 GiB (86.52%)
+2026-02-10T18:22:19.495731300Z [INFO] TRADER-001.TradingNode: Swap-Avail: 2.39 GiB (13.48%)
+2026-02-10T18:22:19.496831900Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.496836200Z [INFO] TRADER-001.TradingNode:  IDENTIFIERS
+2026-02-10T18:22:19.496836500Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.496837000Z [INFO] TRADER-001.TradingNode: trader_id: TRADER-001
+2026-02-10T18:22:19.496837500Z [INFO] TRADER-001.TradingNode: machine_id: Justin
+2026-02-10T18:22:19.496839300Z [INFO] TRADER-001.TradingNode: instance_id: 19948809-3766-48e9-b66d-8c049071cfe4
+2026-02-10T18:22:19.496839800Z [INFO] TRADER-001.TradingNode: PID: 64288
+2026-02-10T18:22:19.496840000Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.496840200Z [INFO] TRADER-001.TradingNode:  VERSIONING
+2026-02-10T18:22:19.496840300Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.496867600Z [INFO] TRADER-001.TradingNode: nautilus_trader: 1.221.0
+2026-02-10T18:22:19.496880700Z [INFO] TRADER-001.TradingNode: python: 3.11.14
+2026-02-10T18:22:19.496883600Z [INFO] TRADER-001.TradingNode: numpy: 2.4.2
+2026-02-10T18:22:19.496886900Z [INFO] TRADER-001.TradingNode: pandas: 2.3.3
+2026-02-10T18:22:19.496888900Z [INFO] TRADER-001.TradingNode: msgspec: 0.20.0
+2026-02-10T18:22:19.496891400Z [INFO] TRADER-001.TradingNode: pyarrow: 23.0.0
+2026-02-10T18:22:19.496893500Z [INFO] TRADER-001.TradingNode: pytz: 2025.2
+2026-02-10T18:22:19.497386700Z [INFO] TRADER-001.TradingNode: uvloop: Unavailable (failed to import package)
+2026-02-10T18:22:19.497391900Z [INFO] TRADER-001.TradingNode: =================================================================
+2026-02-10T18:22:19.498409100Z [INFO] TRADER-001.TradingNode: Building system kernel
+2026-02-10T18:22:19.498558300Z [INFO] TRADER-001.MessageBus: config.database=None
+2026-02-10T18:22:19.498561900Z [INFO] TRADER-001.MessageBus: config.encoding='msgpack'
+2026-02-10T18:22:19.498563000Z [INFO] TRADER-001.MessageBus: config.timestamps_as_iso8601=False
+2026-02-10T18:22:19.498563500Z [INFO] TRADER-001.MessageBus: config.buffer_interval_ms=None
+2026-02-10T18:22:19.498564300Z [INFO] TRADER-001.MessageBus: config.autotrim_mins=None
+2026-02-10T18:22:19.498565000Z [INFO] TRADER-001.MessageBus: config.use_trader_prefix=True
+2026-02-10T18:22:19.498565700Z [INFO] TRADER-001.MessageBus: config.use_trader_id=True
+2026-02-10T18:22:19.498566800Z [INFO] TRADER-001.MessageBus: config.use_instance_id=False
+2026-02-10T18:22:19.498568100Z [INFO] TRADER-001.MessageBus: config.streams_prefix='stream'
+2026-02-10T18:22:19.498568700Z [INFO] TRADER-001.MessageBus: config.types_filter=None
+2026-02-10T18:22:19.498617300Z [INFO] TRADER-001.Cache: READY
+2026-02-10T18:22:19.499076100Z [INFO] TRADER-001.DataEngine: READY
+2026-02-10T18:22:19.499183300Z [INFO] TRADER-001.DataEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:22:19.499212000Z [INFO] TRADER-001.RiskEngine: READY
+2026-02-10T18:22:19.499233200Z [INFO] TRADER-001.RiskEngine: TradingState is ACTIVE
+2026-02-10T18:22:19.499422600Z [INFO] TRADER-001.Throttler-ORDER_SUBMIT_THROTTLER: READY
+2026-02-10T18:22:19.499453600Z [INFO] TRADER-001.RiskEngine: Set MAX_ORDER_SUBMIT_RATE: 100/00:00:01
+2026-02-10T18:22:19.499493100Z [INFO] TRADER-001.Throttler-ORDER_MODIFY_THROTTLER: READY
+2026-02-10T18:22:19.499500900Z [INFO] TRADER-001.RiskEngine: Set MAX_ORDER_MODIFY_RATE: 100/00:00:01
+2026-02-10T18:22:19.499538800Z [INFO] TRADER-001.RiskEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:22:19.499590300Z [INFO] TRADER-001.ExecEngine: READY
+2026-02-10T18:22:19.499630100Z [INFO] TRADER-001.ExecEngine: config.snapshot_orders=False
+2026-02-10T18:22:19.499634000Z [INFO] TRADER-001.ExecEngine: config.snapshot_positions=False
+2026-02-10T18:22:19.499635000Z [INFO] TRADER-001.ExecEngine: config.snapshot_positions_interval_secs=None
+2026-02-10T18:22:19.499679500Z [INFO] TRADER-001.ExecEngine: config.reconciliation=False
+2026-02-10T18:22:19.499682400Z [INFO] TRADER-001.ExecEngine: config.reconciliation_lookback_mins=None
+2026-02-10T18:22:19.499683000Z [INFO] TRADER-001.ExecEngine: config.reconciliation_instrument_ids=None
+2026-02-10T18:22:19.499683700Z [INFO] TRADER-001.ExecEngine: config.filter_unclaimed_external_orders=False
+2026-02-10T18:22:19.499684300Z [INFO] TRADER-001.ExecEngine: config.filter_position_reports=False
+2026-02-10T18:22:19.499684900Z [INFO] TRADER-001.ExecEngine: config.filtered_client_order_ids=None
+2026-02-10T18:22:19.499685700Z [INFO] TRADER-001.ExecEngine: config.inflight_check_interval_ms=2000
+2026-02-10T18:22:19.499686400Z [INFO] TRADER-001.ExecEngine: config.inflight_check_threshold_ms=5000
+2026-02-10T18:22:19.499687100Z [INFO] TRADER-001.ExecEngine: config.inflight_check_retries=5
+2026-02-10T18:22:19.499687700Z [INFO] TRADER-001.ExecEngine: config.own_books_audit_interval_secs=None
+2026-02-10T18:22:19.499688300Z [INFO] TRADER-001.ExecEngine: config.open_check_interval_secs=None
+2026-02-10T18:22:19.499688900Z [INFO] TRADER-001.ExecEngine: config.open_check_open_only=True
+2026-02-10T18:22:19.499689500Z [INFO] TRADER-001.ExecEngine: config.open_check_lookback_mins=60
+2026-02-10T18:22:19.499690100Z [INFO] TRADER-001.ExecEngine: config.open_check_threshold_ms=5000
+2026-02-10T18:22:19.499690600Z [INFO] TRADER-001.ExecEngine: config.open_check_missing_retries=5
+2026-02-10T18:22:19.499691400Z [INFO] TRADER-001.ExecEngine: config.max_single_order_queries_per_cycle=10
+2026-02-10T18:22:19.499692100Z [INFO] TRADER-001.ExecEngine: config.single_order_query_delay_ms=100
+2026-02-10T18:22:19.499693900Z [INFO] TRADER-001.ExecEngine: config.reconciliation_startup_delay_secs=10.0
+2026-02-10T18:22:19.499694500Z [INFO] TRADER-001.ExecEngine: config.purge_closed_orders_interval_mins=None
+2026-02-10T18:22:19.499695200Z [INFO] TRADER-001.ExecEngine: config.purge_closed_orders_buffer_mins=None
+2026-02-10T18:22:19.499695800Z [INFO] TRADER-001.ExecEngine: config.purge_closed_positions_interval_mins=None
+2026-02-10T18:22:19.499696400Z [INFO] TRADER-001.ExecEngine: config.purge_closed_positions_buffer_mins=None
+2026-02-10T18:22:19.499696900Z [INFO] TRADER-001.ExecEngine: config.purge_account_events_interval_mins=None
+2026-02-10T18:22:19.499697500Z [INFO] TRADER-001.ExecEngine: config.purge_account_events_lookback_mins=None
+2026-02-10T18:22:19.499698200Z [INFO] TRADER-001.ExecEngine: config.purge_from_database=False
+2026-02-10T18:22:19.499698800Z [INFO] TRADER-001.ExecEngine: config.graceful_shutdown_on_exception=False
+2026-02-10T18:22:19.499730800Z [INFO] TRADER-001.Cache: Cached 0 general objects from database
+2026-02-10T18:22:19.499735500Z [INFO] TRADER-001.Cache: Cached 0 currencies from database
+2026-02-10T18:22:19.499737600Z [INFO] TRADER-001.Cache: Cached 0 instruments from database
+2026-02-10T18:22:19.499741600Z [INFO] TRADER-001.Cache: Cached 0 accounts from database
+2026-02-10T18:22:19.499744600Z [INFO] TRADER-001.Cache: Cached 0 orders from database
+2026-02-10T18:22:19.499747500Z [INFO] TRADER-001.Cache: Cached 0 order lists from database
+2026-02-10T18:22:19.499750500Z [INFO] TRADER-001.Cache: Cached 0 positions from database
+2026-02-10T18:22:19.499763600Z [INFO] TRADER-001.Cache: Checking data integrity
+2026-02-10T18:22:19.499779600Z [INFO] TRADER-001.Cache: Integrity check passed in 0μs
+2026-02-10T18:22:19.499798200Z [INFO] TRADER-001.ExecEngine: Loaded cache in 0ms
+2026-02-10T18:22:19.499833300Z [INFO] TRADER-001.OrderEmulator: READY
+2026-02-10T18:22:19.499883600Z [INFO] TRADER-001.TRADER-001: READY
+2026-02-10T18:22:19.499902900Z [INFO] TRADER-001.TradingNode: Initialized in 354ms
+2026-02-10T18:22:19.499916600Z [INFO] TRADER-001.TradingNode: has_cache_backing=False
+2026-02-10T18:22:19.499921400Z [INFO] TRADER-001.TradingNode: has_msgbus_backing=False
+2026-02-10T18:22:19.500083200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: READY
+2026-02-10T18:22:19.500181100Z [INFO] TRADER-001.ExecEngine: Registered OMS.UNSPECIFIED for Strategy OneMinuteBuyHoldStrategy-000
+2026-02-10T18:22:19.500189700Z [INFO] TRADER-001.TRADER-001: Registered Strategy OneMinuteBuyHoldStrategy-000
+2026-02-10T18:22:19.500240900Z [INFO] TRADER-001.TradingNode: Building data client for MT5
+2026-02-10T18:22:19.500279200Z [INFO] TRADER-001.MetaTrader5InstrumentProvider: READY
+2026-02-10T18:22:19.500305400Z [INFO] TRADER-001.DataClient-MT5: READY
+2026-02-10T18:22:19.500347400Z [INFO] TRADER-001.DataEngine: Registered MT5
+2026-02-10T18:22:19.500358100Z [INFO] TRADER-001.TradingNode: Building execution client for MT5
+2026-02-10T18:22:19.500377300Z [INFO] TRADER-001.MetaTrader5InstrumentProvider: READY
+2026-02-10T18:22:19.500409700Z [INFO] TRADER-001.ExecClient-MT5: READY
+2026-02-10T18:22:19.500426300Z [INFO] TRADER-001.ExecEngine: Registered ExecutionClient-MT5
+2026-02-10T18:22:19.520392000Z [INFO] TRADER-001.TradingNode: STARTING
+2026-02-10T18:22:19.520480500Z [INFO] TRADER-001.DataClient-MT5: RUNNING
+2026-02-10T18:22:19.520504500Z [INFO] TRADER-001.DataEngine: RUNNING
+2026-02-10T18:22:19.520523600Z [INFO] TRADER-001.RiskEngine: RUNNING
+2026-02-10T18:22:19.520538400Z [INFO] TRADER-001.ExecClient-MT5: RUNNING
+2026-02-10T18:22:19.520557600Z [INFO] TRADER-001.ExecEngine: Started reconciliation task
+2026-02-10T18:22:19.520563400Z [INFO] TRADER-001.ExecEngine: RUNNING
+2026-02-10T18:22:19.520567400Z [INFO] TRADER-001.DataEngine: Connecting all clients...
+2026-02-10T18:22:19.520569800Z [INFO] TRADER-001.DataClient-MT5: Connecting...
+2026-02-10T18:22:19.520579600Z [INFO] TRADER-001.ExecEngine: Connecting all clients...
+2026-02-10T18:22:19.520583000Z [INFO] TRADER-001.ExecClient-MT5: Connecting...
+2026-02-10T18:22:19.520593400Z [INFO] TRADER-001.TradingNode: Awaiting engine connections and initializations (60.0s timeout)...
+2026-02-10T18:22:19.520754500Z [INFO] TRADER-001.ExecEngine: Starting continuous reconciliation with intervals: inflight=2000ms, consistency=Nones
+2026-02-10T18:22:19.520760200Z [INFO] TRADER-001.ExecEngine: Startup reconciliation disabled, proceeding with continuous checks
+2026-02-10T18:22:19.520781100Z [INFO] TRADER-001.DataClient-MT5: MetaTrader5 data client connected
+2026-02-10T18:22:19.521249400Z [INFO] TRADER-001.ExecClient-MT5: MetaTrader5 execution client connected
+2026-02-10T18:22:19.521471300Z [INFO] TRADER-001.Portfolio: Updated AccountState(account_id=MT5-61450375, account_type=MARGIN, base_currency=USD, is_reported=True, balances=[AccountBalance(total=49_888.94 USD, locked=0.00 USD, free=49_888.94 USD)], margins=[MarginBalance(initial=0.00 USD, maintenance=0.00 USD, instrument_id=None)], event_id=5032ccaf-c33c-49af-bacc-0c3e4b3d79b5)
+2026-02-10T18:22:19.521516500Z [INFO] TRADER-001.ExecClient-MT5: Account MT5-61450375 registered in cache
+2026-02-10T18:22:19.521581300Z [INFO] TRADER-001.DataClient-MT5: Connected
+2026-02-10T18:22:19.521591400Z [INFO] TRADER-001.ExecClient-MT5: Connected
+2026-02-10T18:22:19.521606300Z [WARN] TRADER-001.TradingNode: Reconciliation deactivated
+2026-02-10T18:22:19.521621700Z [INFO] TRADER-001.OrderEmulator: No emulated orders to reactivate
+2026-02-10T18:22:19.521634300Z [INFO] TRADER-001.OrderEmulator: RUNNING
+2026-02-10T18:22:19.521646000Z [INFO] TRADER-001.Portfolio: Initialized 0 open orders
+2026-02-10T18:22:19.521680900Z [INFO] TRADER-001.Portfolio: Initialized 0 open positions
+2026-02-10T18:22:19.521688600Z [INFO] TRADER-001.TradingNode: Awaiting portfolio initialization (10.0s timeout)...
+2026-02-10T18:22:19.521727500Z [INFO] TRADER-001.TradingNode: Portfolio initialized
+2026-02-10T18:22:19.521744500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.oms_type=None
+2026-02-10T18:22:19.521745800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.external_order_claims=None
+2026-02-10T18:22:19.521746500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: self.config.manage_gtd_expiry=False
+2026-02-10T18:22:19.521758200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Set ClientOrderIdGenerator client_order_id count to 0
+2026-02-10T18:22:19.521760900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Set ClientOrderIdGenerator order_list_id count to 0
+2026-02-10T18:22:19.521836200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> SubscribeBars(bar_type=EURUSD.MT5-5-SECOND-MID-EXTERNAL, client_id=None, venue=MT5)
+2026-02-10T18:22:19.521935800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: RUNNING
+2026-02-10T18:22:19.521946000Z [INFO] TRADER-001.TRADER-001: RUNNING
+2026-02-10T18:22:19.521950300Z [INFO] TRADER-001.TradingNode: RUNNING
+2026-02-10T18:22:19.522140800Z [INFO] TRADER-001.DataClient-MT5: Subscribed to bars for EURUSD
+2026-02-10T18:22:19.522414900Z [INFO] TRADER-001.DataClient-MT5: Subscribed EURUSD.MT5-5-SECOND-MID-EXTERNAL bars
+2026-02-10T18:22:23.080180900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182223-001-000-1, side=BUY, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:23.080246500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182223-001-000-1, venue_order_id=None, position_id=None, tags=None), position_id=None)
+2026-02-10T18:22:23.080415900Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182223-001-000-1, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:23.331425800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182223-001-000-1, venue_order_id=241756207, account_id=MT5-61450375, ts_event=1770747743330878400)
+2026-02-10T18:22:23.331708300Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=10000.00
+2026-02-10T18:22:23.331800800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182223-001-000-1, venue_order_id=241756207, account_id=MT5-61450375, trade_id=192230475, position_id=P-20260210-182223-001-000-1, order_side=BUY, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747743330878400)
+2026-02-10T18:22:23.331842400Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD ENTRY FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:23.331910500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionOpened(instrument_id=EURUSD.MT5, position_id=P-20260210-182223-001-000-1, account_id=MT5-61450375, opening_order_id=O-20260210-182223-001-000-1, closing_order_id=None, entry=BUY, side=LONG, signed_qty=10000.0, quantity=10_000.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=0.0, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747743330878400, ts_last=1770747743330878400, ts_closed=0, duration_ns=0)
+2026-02-10T18:22:28.180871900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182228-001-000-2, side=SELL, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:28.180963000Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182228-001-000-2, venue_order_id=None, position_id=None, tags=None), position_id=P-20260210-182223-001-000-1)
+2026-02-10T18:22:28.180997200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: TIME-EXIT EURUSD.MT5 qty=10000.00
+2026-02-10T18:22:28.181140000Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182228-001-000-2, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:28.181330000Z [WARN] TRADER-001.ExecClient-MT5: Position P-20260210-182223-001-000-1 missing venue_position_id; using opening order ticket 241756207 for MT5 close order
+2026-02-10T18:22:28.438755300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182228-001-000-2, venue_order_id=241756238, account_id=MT5-61450375, ts_event=1770747748438400700)
+2026-02-10T18:22:28.438928900Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=0
+2026-02-10T18:22:28.438969200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182228-001-000-2, venue_order_id=241756238, account_id=MT5-61450375, trade_id=192230505, position_id=P-20260210-182223-001-000-1, order_side=SELL, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747748438400700)
+2026-02-10T18:22:28.438983100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT ORDER FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:28.439008200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionClosed(instrument_id=EURUSD.MT5, position_id=P-20260210-182223-001-000-1, account_id=MT5-61450375, opening_order_id=O-20260210-182223-001-000-1, closing_order_id=O-20260210-182228-001-000-2, entry=BUY, side=FLAT, signed_qty=0.0, quantity=0.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=1.18935, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747743330878400, ts_last=1770747748438400700, ts_closed=1770747748438400700, duration_ns=5107522300)
+2026-02-10T18:22:28.439024400Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT EURUSD.MT5 realized_pnl=0.00 USD
+2026-02-10T18:22:29.204325300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182229-001-000-3, side=BUY, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:29.204389300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182229-001-000-3, venue_order_id=None, position_id=None, tags=None), position_id=None)
+2026-02-10T18:22:29.204617300Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182229-001-000-3, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:29.457736700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182229-001-000-3, venue_order_id=241756243, account_id=MT5-61450375, ts_event=1770747749457372100)
+2026-02-10T18:22:29.457893400Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=10000.00
+2026-02-10T18:22:29.457926100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182229-001-000-3, venue_order_id=241756243, account_id=MT5-61450375, trade_id=192230510, position_id=P-20260210-182229-001-000-2, order_side=BUY, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747749457372100)
+2026-02-10T18:22:29.457954000Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD ENTRY FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:29.457976600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionOpened(instrument_id=EURUSD.MT5, position_id=P-20260210-182229-001-000-2, account_id=MT5-61450375, opening_order_id=O-20260210-182229-001-000-3, closing_order_id=None, entry=BUY, side=LONG, signed_qty=10000.0, quantity=10_000.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=0.0, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747749457372100, ts_last=1770747749457372100, ts_closed=0, duration_ns=0)
+2026-02-10T18:22:34.482463600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182234-001-000-4, side=SELL, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:34.482553700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182234-001-000-4, venue_order_id=None, position_id=None, tags=None), position_id=P-20260210-182229-001-000-2)
+2026-02-10T18:22:34.482644100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: TIME-EXIT EURUSD.MT5 qty=10000.00
+2026-02-10T18:22:34.482878700Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182234-001-000-4, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:34.483132300Z [WARN] TRADER-001.ExecClient-MT5: Position P-20260210-182229-001-000-2 missing venue_position_id; using opening order ticket 241756243 for MT5 close order
+2026-02-10T18:22:34.735607000Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182234-001-000-4, venue_order_id=241756300, account_id=MT5-61450375, ts_event=1770747754735241700)
+2026-02-10T18:22:34.735714800Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=0
+2026-02-10T18:22:34.735749900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182234-001-000-4, venue_order_id=241756300, account_id=MT5-61450375, trade_id=192230562, position_id=P-20260210-182229-001-000-2, order_side=SELL, order_type=MARKET, last_qty=10_000.00, last_px=1.18937 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747754735241700)
+2026-02-10T18:22:34.735765400Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT ORDER FILLED EURUSD.MT5 qty=10000.00 px=1.18937
+2026-02-10T18:22:34.735791900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionClosed(instrument_id=EURUSD.MT5, position_id=P-20260210-182229-001-000-2, account_id=MT5-61450375, opening_order_id=O-20260210-182229-001-000-3, closing_order_id=O-20260210-182234-001-000-4, entry=BUY, side=FLAT, signed_qty=0.0, quantity=0.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=1.18937, realized_return=0.00002, realized_pnl=0.20 USD, unrealized_pnl=0.00 USD, ts_opened=1770747749457372100, ts_last=1770747754735241700, ts_closed=1770747754735241700, duration_ns=5277869600)
+2026-02-10T18:22:34.735805900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT EURUSD.MT5 realized_pnl=0.20 USD
+2026-02-10T18:22:35.334160200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182235-001-000-5, side=BUY, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:35.334226900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182235-001-000-5, venue_order_id=None, position_id=None, tags=None), position_id=None)
+2026-02-10T18:22:35.334400300Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182235-001-000-5, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:35.585194300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182235-001-000-5, venue_order_id=241756308, account_id=MT5-61450375, ts_event=1770747755584883100)
+2026-02-10T18:22:35.585359800Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=10000.00
+2026-02-10T18:22:35.585401400Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182235-001-000-5, venue_order_id=241756308, account_id=MT5-61450375, trade_id=192230568, position_id=P-20260210-182235-001-000-3, order_side=BUY, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747755584883100)
+2026-02-10T18:22:35.585453300Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD ENTRY FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:35.585491900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionOpened(instrument_id=EURUSD.MT5, position_id=P-20260210-182235-001-000-3, account_id=MT5-61450375, opening_order_id=O-20260210-182235-001-000-5, closing_order_id=None, entry=BUY, side=LONG, signed_qty=10000.0, quantity=10_000.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=0.0, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747755584883100, ts_last=1770747755584883100, ts_closed=0, duration_ns=0)
+2026-02-10T18:22:36.358975800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182236-001-000-6, side=SELL, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:36.359039500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182236-001-000-6, venue_order_id=None, position_id=None, tags=None), position_id=P-20260210-182235-001-000-3)
+2026-02-10T18:22:36.359090100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: TIME-EXIT EURUSD.MT5 qty=10000.00
+2026-02-10T18:22:36.359270700Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182236-001-000-6, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:36.359470300Z [WARN] TRADER-001.ExecClient-MT5: Position P-20260210-182235-001-000-3 missing venue_position_id; using opening order ticket 241756308 for MT5 close order
+2026-02-10T18:22:36.610938100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182236-001-000-6, venue_order_id=241756311, account_id=MT5-61450375, ts_event=1770747756610629400)
+2026-02-10T18:22:36.611043500Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=0
+2026-02-10T18:22:36.611082700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182236-001-000-6, venue_order_id=241756311, account_id=MT5-61450375, trade_id=192230571, position_id=P-20260210-182235-001-000-3, order_side=SELL, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747756610629400)
+2026-02-10T18:22:36.611097800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT ORDER FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:36.611125100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionClosed(instrument_id=EURUSD.MT5, position_id=P-20260210-182235-001-000-3, account_id=MT5-61450375, opening_order_id=O-20260210-182235-001-000-5, closing_order_id=O-20260210-182236-001-000-6, entry=BUY, side=FLAT, signed_qty=0.0, quantity=0.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=1.18935, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747755584883100, ts_last=1770747756610629400, ts_closed=1770747756610629400, duration_ns=1025746300)
+2026-02-10T18:22:36.611140200Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT EURUSD.MT5 realized_pnl=0.00 USD
+2026-02-10T18:22:38.390911100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182238-001-000-7, side=BUY, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:38.390975900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182238-001-000-7, venue_order_id=None, position_id=None, tags=None), position_id=None)
+2026-02-10T18:22:38.391190800Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(BUY 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182238-001-000-7, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:38.641641800Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182238-001-000-7, venue_order_id=241756333, account_id=MT5-61450375, ts_event=1770747758641120100)
+2026-02-10T18:22:38.641922100Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=10000.00
+2026-02-10T18:22:38.641980500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182238-001-000-7, venue_order_id=241756333, account_id=MT5-61450375, trade_id=192230581, position_id=P-20260210-182238-001-000-4, order_side=BUY, order_type=MARKET, last_qty=10_000.00, last_px=1.18935 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747758641120100)
+2026-02-10T18:22:38.642015600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD ENTRY FILLED EURUSD.MT5 qty=10000.00 px=1.18935
+2026-02-10T18:22:38.642044400Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionOpened(instrument_id=EURUSD.MT5, position_id=P-20260210-182238-001-000-4, account_id=MT5-61450375, opening_order_id=O-20260210-182238-001-000-7, closing_order_id=None, entry=BUY, side=LONG, signed_qty=10000.0, quantity=10_000.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=0.0, realized_return=0.00000, realized_pnl=0.00 USD, unrealized_pnl=0.00 USD, ts_opened=1770747758641120100, ts_last=1770747758641120100, ts_closed=0, duration_ns=0)
+2026-02-10T18:22:43.657373900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderInitialized(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182243-001-000-8, side=SELL, type=MARKET, quantity=10_000.00, time_in_force=IOC, post_only=False, reduce_only=False, quote_quantity=False, options={}, emulation_trigger=NO_TRIGGER, trigger_instrument_id=None, contingency_type=NO_CONTINGENCY, order_list_id=None, linked_order_ids=None, parent_order_id=None, exec_algorithm_id=None, exec_algorithm_params=None, exec_spawn_id=None, tags=None)
+2026-02-10T18:22:43.657445100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> [Risk] SubmitOrder(order=MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182243-001-000-8, venue_order_id=None, position_id=None, tags=None), position_id=P-20260210-182238-001-000-4)
+2026-02-10T18:22:43.657516700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: TIME-EXIT EURUSD.MT5 qty=10000.00
+2026-02-10T18:22:43.657712500Z [INFO] TRADER-001.ExecClient-MT5: Submit MarketOrder(SELL 10_000.00 EURUSD.MT5 MARKET IOC, status=INITIALIZED, client_order_id=O-20260210-182243-001-000-8, venue_order_id=None, position_id=None, tags=None)
+2026-02-10T18:22:43.657962800Z [WARN] TRADER-001.ExecClient-MT5: Position P-20260210-182238-001-000-4 missing venue_position_id; using opening order ticket 241756333 for MT5 close order
+2026-02-10T18:22:43.913779500Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderAccepted(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182243-001-000-8, venue_order_id=241756432, account_id=MT5-61450375, ts_event=1770747763913399700)
+2026-02-10T18:22:43.913903600Z [INFO] TRADER-001.Portfolio: EURUSD.MT5 net_position=0
+2026-02-10T18:22:43.913946900Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] OrderFilled(instrument_id=EURUSD.MT5, client_order_id=O-20260210-182243-001-000-8, venue_order_id=241756432, account_id=MT5-61450375, trade_id=192230674, position_id=P-20260210-182238-001-000-4, order_side=SELL, order_type=MARKET, last_qty=10_000.00, last_px=1.18936 USD, commission=0.00 USD, liquidity_side=TAKER, ts_event=1770747763913399700)
+2026-02-10T18:22:43.913965100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT ORDER FILLED EURUSD.MT5 qty=10000.00 px=1.18936
+2026-02-10T18:22:43.913996700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: <--[EVT] PositionClosed(instrument_id=EURUSD.MT5, position_id=P-20260210-182238-001-000-4, account_id=MT5-61450375, opening_order_id=O-20260210-182238-001-000-7, closing_order_id=O-20260210-182243-001-000-8, entry=BUY, side=FLAT, signed_qty=0.0, quantity=0.00, peak_qty=10_000.00, currency=USD, avg_px_open=1.18935, avg_px_close=1.18936, realized_return=0.00001, realized_pnl=0.10 USD, unrealized_pnl=0.00 USD, ts_opened=1770747758641120100, ts_last=1770747763913399700, ts_closed=1770747763913399700, duration_ns=5272279600)
+2026-02-10T18:22:43.914013100Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: BUY-HOLD EXIT EURUSD.MT5 realized_pnl=0.10 USD
+2026-02-10T18:22:44.774777400Z [INFO] TRADER-001.TradingNode: STOPPING
+2026-02-10T18:22:44.774969600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: [CMD]--> UnsubscribeBars(bar_type=EURUSD.MT5-5-SECOND-MID-EXTERNAL, client_id=None, venue=MT5)
+2026-02-10T18:22:44.775233700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Unsubscribed from EURUSD.MT5-5-SECOND-MID-EXTERNAL bar data
+2026-02-10T18:22:44.775253600Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: Canceling executor tasks
+2026-02-10T18:22:44.775360700Z [INFO] TRADER-001.OneMinuteBuyHoldStrategy: STOPPED
+2026-02-10T18:22:44.775378300Z [INFO] TRADER-001.TRADER-001: STOPPED
+2026-02-10T18:22:44.775392600Z [INFO] TRADER-001.TradingNode: Awaiting post stop (10.0s timeout)...
+2026-02-10T18:22:44.775604900Z [INFO] TRADER-001.DataClient-MT5: Unsubscribed from bars for EURUSD
+2026-02-10T18:22:44.775746500Z [INFO] TRADER-001.DataClient-MT5: Unsubscribed EURUSD.MT5-5-SECOND-MID-EXTERNAL bars
+2026-02-10T18:22:54.780800800Z [INFO] TRADER-001.DataClient-MT5: STOPPED
+2026-02-10T18:22:54.780829300Z [INFO] TRADER-001.ExecClient-MT5: STOPPED
+2026-02-10T18:22:54.780837300Z [INFO] TRADER-001.DataEngine: Disconnecting all clients...
+2026-02-10T18:22:54.780841500Z [INFO] TRADER-001.DataClient-MT5: Disconnecting...
+2026-02-10T18:22:54.780866400Z [INFO] TRADER-001.ExecEngine: Disconnecting all clients...

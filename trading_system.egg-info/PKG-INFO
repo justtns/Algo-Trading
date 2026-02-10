@@ -1,0 +1,90 @@
+Metadata-Version: 2.4
+Name: trading-system
+Version: 0.2.0
+Summary: NautilusTrader-based algorithmic trading system with IBKR and MT5 support.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: nautilus_trader>=1.200
+Requires-Dist: pandas<3.0,>=2.0
+Requires-Dist: pyarrow>=14.0
+Requires-Dist: holidays>=0.40
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: ibkr
+Requires-Dist: nautilus_trader[ibkr]; extra == "ibkr"
+Provides-Extra: metatrader
+Requires-Dist: MetaTrader5>=5.0; extra == "metatrader"
+Provides-Extra: polygon
+Requires-Dist: polygon-api-client>=1.13; extra == "polygon"
+Provides-Extra: notebooks
+Requires-Dist: nbformat>=5.9; extra == "notebooks"
+Requires-Dist: jupyterlab>=4.0; extra == "notebooks"
+Requires-Dist: plotly>=5.0; extra == "notebooks"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21; extra == "dev"
+
+# Trading System
+
+NautilusTrader-based algorithmic trading system with MetaTrader 5 and Interactive Brokers support.
+
+## Features
+
+- **NautilusTrader engine** — Cython-optimized event-driven architecture for backtesting and live trading
+- **Gotobi FX strategy** — Japanese settlement day trading with optional stop-loss
+- **Mean reversion, breakout, and RSI/MACD/MA strategies** — Signal-based strategies
+- **MetaTrader 5 adapter** — Custom adapter with tick polling, bar aggregation, and order execution
+- **IBKR adapter** — Native NautilusTrader Interactive Brokers integration
+- **FX instrument factory** — CurrencyPair builder from contracts.json config
+
+## Quick Start
+
+```bash
+# Install
+pip install -e ".[ibkr,notebooks]"
+
+# Run backtest
+jupyter lab tests/notebooks/backtest_demo.ipynb
+```
+
+## Project Structure
+
+```
+trader/
+  core/           # event models, instruments, constants
+  config/         # BacktestEngine / TradingNode builders
+  adapters/       # MetaTrader 5 (custom) + IBKR (native) adapters
+  data/           # pipeline, bar builder, data catalog
+  strategy/       # Gotobi, mean reversion, breakout, RSI/MACD/MA strategies
+  exec/           # risk management
+  portfolio/      # position tracking, PnL
+  interfaces/     # Telegram/HTTP stubs
+config/           # FX contract sizing (contracts.json)
+historical_data_services/  # IBKR + Polygon data fetchers
+tests/notebooks/  # backtest_demo, live_demo, data_fetch
+docs/             # setup, architecture, strategies, adapters, migration
+```
+
+## Documentation
+
+- [Setup Guide](docs/setup.md) — installation, broker setup, data sources
+- [Architecture](docs/architecture.md) — system design and data flow
+- [Strategies](docs/strategies.md) — Gotobi, mean reversion, breakout, RSI/MACD/MA reference
+- [Adapters](docs/adapters.md) — MT5 and IBKR configuration guide
+- [Migration Notes](docs/migration.md) — Backtrader to NautilusTrader mapping
+
+## Strategies
+
+| Strategy | Description | Config |
+|----------|-------------|--------|
+| `GotobiStrategy` | FX settlement day entry/exit | `GotobiConfig` |
+| `GotobiWithSLStrategy` | Gotobi with stop-loss | `GotobiWithSLConfig` |
+| `MeanReversionStrategy` | Buy below MA, sell above MA | `MeanReversionConfig` |
+| `BreakoutStrategy` | Buy new highs, sell new lows | `BreakoutConfig` |
+| `RsiMacdMaStrategy` | RSI + MACD histogram curl + MA confirmation | `RsiMacdMaConfig` |
+
+## Broker Support
+
+| Broker | Type | Data | Execution |
+|--------|------|------|-----------|
+| Interactive Brokers | Native adapter | Real-time bars | Full order types |
+| MetaTrader 5 | Custom adapter | Tick polling → bars | Market/limit/stop |
