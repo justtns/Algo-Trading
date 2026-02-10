@@ -1,56 +1,64 @@
-# Trading System Overview
+# Trading System
 
-## Directory Layout
+NautilusTrader-based algorithmic trading system with MetaTrader 5 and Interactive Brokers support.
 
-```text
-trader/
-  core/           # clocks, event models
-  data/           # streams + normalization (pipeline.py), bar builder, store, IBKR adapter
-  strategy/       # strategies, features, signals (Gotobi lives here)
-  exec/           # TradeRunner, router, risk/reconcile helpers
-  portfolio/      # store/book/PnL helpers
-  interfaces/     # control surfaces (Telegram/HTTP stubs)
-  research/       # notebooks/scripts (e.g., tests/traderunner_demo.ipynb)
-config/           # contract sizing (e.g., contracts.json)
-historical_data_services/  # historical fetch utilities (IBKR, Polygon)
-data/             # sample parquet data (not tracked)
-tests/            # demo notebook
+## Features
+
+- **NautilusTrader engine** — Cython-optimized event-driven architecture for backtesting and live trading
+- **Gotobi FX strategy** — Japanese settlement day trading with optional stop-loss
+- **Mean reversion & breakout strategies** — Signal-based strategies
+- **MetaTrader 5 adapter** — Custom adapter with tick polling, bar aggregation, and order execution
+- **IBKR adapter** — Native NautilusTrader Interactive Brokers integration
+- **FX instrument factory** — CurrencyPair builder from contracts.json config
+
+## Quick Start
+
+```bash
+# Install
+pip install -e ".[ibkr,notebooks]"
+
+# Run backtest
+jupyter lab tests/notebooks/backtest_demo.ipynb
 ```
 
-## Architecture (mapped to the phases)
+## Project Structure
 
-1) **Data Handler**  
-   - `trader.data.pipeline.DataNormalizer/DataHandler` normalize parquet/CSV to OHLCV; `DataStreamer` + `StreamingOHLCVFeed` convert queues into Backtrader feeds.  
-   - `trader.data.bar_builder` turns ticks into bars with consistent rules.  
-   - Optional FX inversion to keep account in a base currency (RunnerConfig).  
-   - Historical pulls via `trader.data.ibkr_stream.IBKRHistoryService` (wraps `historical_data_services/ibkr_data_fetch.py`).
-   - Live streams: `trader.data.ibkr_stream.IBKRLiveStreamer` (ib_insync real-time bars), `trader.data.ctrader_stream.stream_ctrader_quotes` (bridge your cTrader quote source into `DataStreamer` via the `BarBuilder`), and `trader.data.metatrader_stream.MetaTraderLiveStreamer` (poll ticks from an MT5 terminal and roll them into bars using the shared broker session).
-   - Live orders: `trader.exec.metatrader.MetaTraderBroker/build_metatrader_router` forward signals through `OrderRouter` into MT5; reuse the same broker instance for streaming + orders to keep a single session.
+```
+trader/
+  core/           # event models, instruments, constants
+  config/         # BacktestEngine / TradingNode builders
+  adapters/       # MetaTrader 5 (custom) + IBKR (native) adapters
+  data/           # pipeline, bar builder, data catalog
+  strategy/       # Gotobi, mean reversion, breakout strategies
+  exec/           # risk management
+  portfolio/      # position tracking, PnL
+  interfaces/     # Telegram/HTTP stubs
+config/           # FX contract sizing (contracts.json)
+historical_data_services/  # IBKR + Polygon data fetchers
+tests/notebooks/  # backtest_demo, live_demo, data_fetch
+docs/             # setup, architecture, strategies, adapters, migration
+```
 
-2) **Strategy**  
-   - User strategies in `trader.strategy` (e.g., `GotobiBT`), shared features/signals in `features.py` / `signals.py`.
+## Documentation
 
-3) **TradeRunner Builder/Pool**  
-   - `trader.exec.traderunner` builds Cerebro per `StrategySpec`, supports multiple strategies/analyzers per runner, contract sizing from `config/contracts.json`, FX inversion, and async execution.  
-   - `RiskEstimator` enforces simple limits / sizer selection.
+- [Setup Guide](docs/setup.md) — installation, broker setup, data sources
+- [Architecture](docs/architecture.md) — system design and data flow
+- [Strategies](docs/strategies.md) — Gotobi, mean reversion, breakout reference
+- [Adapters](docs/adapters.md) — MT5 and IBKR configuration guide
+- [Migration Notes](docs/migration.md) — Backtrader to NautilusTrader mapping
 
-4) **Router (exec phase)**  
-   - `trader.exec.router.OrderRouter` performs risk check then forwards to a broker sender callable.  
-   - Additional risk sizing helpers live in `trader.exec.risk.RiskManager`.
+## Strategies
 
-5) **Store/Book (DB phase)**  
-   - `trader.portfolio.store.TickerStore` tracks fills/positions/MTM; `book.py` and `pnl.py` placeholders for richer rollups; `data.store.DataStore` can persist bars to parquet.
+| Strategy | Description | Config |
+|----------|-------------|--------|
+| `GotobiStrategy` | FX settlement day entry/exit | `GotobiConfig` |
+| `GotobiWithSLStrategy` | Gotobi with stop-loss | `GotobiWithSLConfig` |
+| `MeanReversionStrategy` | Buy below MA, sell above MA | `MeanReversionConfig` |
+| `BreakoutStrategy` | Buy new highs, sell new lows | `BreakoutConfig` |
 
-6) **Interfaces**  
-   - Stubs in `trader.interfaces.telegram_bot` and `http_api` to wire control surfaces to your engine.
+## Broker Support
 
-## Quick Start (demo)
-
-1. Install `backtrader` and `pandas`.  
-2. Add repo root to `PYTHONPATH`.  
-3. Run `tests/traderunner_demo.ipynb`: streams the USDJPY parquet via `DataStreamer` queue, runs two `GotobiBT` legs. Trade size is in **contracts** scaled by `config/contracts.json` (default 100k lots). FX inversion keeps account in USD if quote differs.
-
-## Notes
-- `backend/__init__.py` is a compatibility shim that re-exports modules from `trader/`.
-- Fill in live wiring for cTrader/IBKR streaming, risk rules, and interfaces as needed.
-- Historical fetchers remain in `historical_data_services/` and are re-exported via `trader.data.ibkr_stream`.
+| Broker | Type | Data | Execution |
+|--------|------|------|-----------|
+| Interactive Brokers | Native adapter | Real-time bars | Full order types |
+| MetaTrader 5 | Custom adapter | Tick polling → bars | Market/limit/stop |
