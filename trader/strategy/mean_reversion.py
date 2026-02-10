@@ -24,6 +24,8 @@ class MeanReversionConfig(StrategyConfig, frozen=True):
     bar_type: str
     trade_size: float = 1.0
     contract_size: float = 100_000
+    allocated_capital: float | None = None
+    margin_rate: float = 0.02
     max_bars: int = 100
 
 
@@ -37,7 +39,11 @@ class MeanReversionStrategy(Strategy):
         super().__init__(config)
         self.instrument_id = InstrumentId.from_str(config.instrument_id)
         self.bar_type = BarType.from_str(config.bar_type)
-        self.trade_qty = config.trade_size * config.contract_size
+        if config.allocated_capital is not None:
+            margin_per_lot = config.margin_rate * config.contract_size
+            self.trade_qty = (config.allocated_capital / margin_per_lot) if margin_per_lot > 0 else 0.0
+        else:
+            self.trade_qty = config.trade_size * config.contract_size
         self.max_bars = config.max_bars
         self._bars: list[dict] = []
 

@@ -5,6 +5,7 @@ Replaces the Backtrader Cerebro-based TradeRunner orchestration.
 from __future__ import annotations
 
 from decimal import Decimal
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence
 
 from nautilus_trader.backtest.engine import BacktestEngine, BacktestEngineConfig
@@ -82,5 +83,72 @@ def build_backtest_engine(
     # Add strategies
     for strategy in strategies:
         engine.add_strategy(strategy)
+
+    return engine
+
+
+@dataclass
+class VenueConfig:
+    """Configuration for a single venue within a multi-venue setup."""
+
+    venue: Venue
+    starting_balance: float
+    currency: str = "USD"
+    account_type: AccountType = AccountType.MARGIN
+    oms_type: OmsType = OmsType.HEDGING
+    leverage: float = 50.0
+
+
+@dataclass
+class StrategyVenueMapping:
+    """Maps a strategy to its venue, instruments, and bar data."""
+
+    strategy: Strategy
+    venue: Venue
+    instruments: Sequence[Instrument] = field(default_factory=list)
+    bars: Dict[BarType, List[Bar]] = field(default_factory=dict)
+
+
+def build_multi_venue_backtest_engine(
+    venue_configs: Sequence[VenueConfig],
+    strategy_mappings: Sequence[StrategyVenueMapping],
+    *,
+    config: BacktestEngineConfig | None = None,
+) -> BacktestEngine:
+    """
+    Build a BacktestEngine with multiple venues, each with separate balance.
+
+    Parameters
+    ----------
+    venue_configs : list of VenueConfig
+        One per venue with balance, currency, account type.
+    strategy_mappings : list of StrategyVenueMapping
+        Each maps a strategy to its venue, instruments, and bar data.
+    config : BacktestEngineConfig or None
+        Custom engine configuration.
+    """
+    engine = BacktestEngine(config=config or BacktestEngineConfig())
+
+    for vc in venue_configs:
+        engine.add_venue(
+            venue=vc.venue,
+            oms_type=vc.oms_type,
+            account_type=vc.account_type,
+            starting_balances=[Money(vc.starting_balance, Currency.from_str(vc.currency))],
+            default_leverage=Decimal(str(vc.leverage)),
+        )
+
+    added_instruments: set[str] = set()
+    for mapping in strategy_mappings:
+        for instrument in mapping.instruments:
+            key = str(instrument.id)
+            if key not in added_instruments:
+                engine.add_instrument(instrument)
+                added_instruments.add(key)
+        for bar_type, bar_list in mapping.bars.items():
+            engine.add_data(bar_list)
+
+    for mapping in strategy_mappings:
+        engine.add_strategy(mapping.strategy)
 
     return engine

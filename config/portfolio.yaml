@@ -1,0 +1,38 @@
+total_capital: 500000
+
+strategies:
+  - name: gotobi_usdjpy
+    strategy: GotobiStrategy
+    venue: MT5
+    instrument_class: margin_based
+    weight: 0.4
+    margin_rate: 0.02
+    safety_factor: 1.5
+    config:
+      instrument_id: "USD/JPY.MT5"
+      bar_type: "USD/JPY.MT5-1-MINUTE-MID-EXTERNAL"
+      entry_time: "01:30:00"
+      exit_time: "08:30:00"
+      contract_size: 100000
+
+  - name: breakout_eurusd
+    strategy: BreakoutStrategy
+    venue: IDEALPRO
+    instrument_class: margin_based
+    weight: 0.3
+    margin_rate: 0.02
+    config:
+      instrument_id: "EUR/USD.IDEALPRO"
+      bar_type: "EUR/USD.IDEALPRO-1-MINUTE-MID-EXTERNAL"
+      contract_size: 100000
+
+  - name: equity_mean_rev
+    strategy: MeanReversionStrategy
+    venue: IDEALPRO
+    instrument_class: capital_based
+    weight: 0.3
+    reference_price: 150.0
+    config:
+      instrument_id: "AAPL.IDEALPRO"
+      bar_type: "AAPL.IDEALPRO-1-MINUTE-LAST-EXTERNAL"
+      contract_size: 1
