@@ -1,6 +1,6 @@
 """
-FX instrument factory: builds NautilusTrader CurrencyPair objects
-from config/contracts.json definitions.
+Instrument factories: builds NautilusTrader instrument objects
+(CurrencyPair, Equity) from config/contracts.json definitions.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from typing import Dict
 
 from nautilus_trader.model.currencies import Currency
 from nautilus_trader.model.identifiers import InstrumentId, Symbol, Venue
-from nautilus_trader.model.instruments import CurrencyPair
+from nautilus_trader.model.instruments import CurrencyPair, Equity
 from nautilus_trader.model.objects import Money, Price, Quantity
 
 
@@ -79,6 +79,56 @@ def make_fx_pair(
         margin_maint=Decimal("0"),
         maker_fee=Decimal("0"),
         taker_fee=Decimal("0"),
+        ts_event=0,
+        ts_init=0,
+    )
+
+
+def make_equity(
+    symbol: str,
+    venue: Venue,
+    *,
+    currency: str = "USD",
+    price_precision: int = 2,
+    lot_size: float = 1,
+    isin: str | None = None,
+) -> Equity:
+    """
+    Build a NautilusTrader Equity instrument.
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker symbol (e.g. "AAPL").
+    venue : Venue
+        The trading venue.
+    currency : str
+        Quote currency.
+    price_precision : int
+        Decimal places for prices.
+    lot_size : float
+        Minimum tradeable quantity (usually 1 for equities).
+    isin : str or None
+        ISIN identifier if available.
+    """
+    instrument_id = InstrumentId(Symbol(symbol), venue)
+    ccy = Currency.from_str(currency)
+    price_increment = Price(10 ** -price_precision, price_precision)
+
+    return Equity(
+        instrument_id=instrument_id,
+        raw_symbol=Symbol(symbol),
+        currency=ccy,
+        price_precision=price_precision,
+        price_increment=price_increment,
+        lot_size=Quantity(lot_size, 0),
+        max_quantity=None,
+        min_quantity=Quantity(1, 0),
+        margin_init=Decimal("0"),
+        margin_maint=Decimal("0"),
+        maker_fee=Decimal("0"),
+        taker_fee=Decimal("0"),
+        isin=isin,
         ts_event=0,
         ts_init=0,
     )

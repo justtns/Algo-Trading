@@ -5,3 +5,4 @@
 /historical_data_services/__pycache__/
 /trader/**/__pycache__/
 /trader/.ipynb_checkpoints
+config/accounts.yaml

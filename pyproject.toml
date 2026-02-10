@@ -9,6 +9,7 @@ dependencies = [
     "pandas>=2.0,<3.0",
     "pyarrow>=14.0",
     "holidays>=0.40",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]

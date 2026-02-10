@@ -30,6 +30,8 @@ class GotobiConfig(StrategyConfig, frozen=True):
     exit_time: str = "08:30:00"
     trade_size: float = 1.0
     contract_size: float = 100_000
+    allocated_capital: float | None = None
+    margin_rate: float = 0.02
     gotobi_days: tuple = (5, 10, 15, 20, 25, 30)
     use_holidays: bool = True
     trading_timezone: str = "Asia/Tokyo"
@@ -52,7 +54,11 @@ class GotobiStrategy(Strategy):
         h, m, s = map(int, config.exit_time.split(":"))
         self.t_exit = time(h, m, s)
 
-        self.trade_qty = config.trade_size * config.contract_size
+        if config.allocated_capital is not None:
+            margin_per_lot = config.margin_rate * config.contract_size
+            self.trade_qty = (config.allocated_capital / margin_per_lot) if margin_per_lot > 0 else 0.0
+        else:
+            self.trade_qty = config.trade_size * config.contract_size
         self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
             gotobi_days=set(config.gotobi_days),
@@ -161,7 +167,11 @@ class GotobiWithSLStrategy(Strategy):
         h, m, s = map(int, config.exit_time.split(":"))
         self.t_exit = time(h, m, s)
 
-        self.trade_qty = config.trade_size * config.contract_size
+        if config.allocated_capital is not None:
+            margin_per_lot = config.margin_rate * config.contract_size
+            self.trade_qty = (config.allocated_capital / margin_per_lot) if margin_per_lot > 0 else 0.0
+        else:
+            self.trade_qty = config.trade_size * config.contract_size
         self.stop_loss_pct = config.stop_loss_pct
         self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
