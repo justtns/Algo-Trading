@@ -6,7 +6,8 @@ GotobiWithSLStrategy: same as above with stop-loss order placed after entry fill
 """
 from __future__ import annotations
 
-from datetime import date, time
+from datetime import date, time, timezone
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
@@ -31,6 +32,7 @@ class GotobiConfig(StrategyConfig, frozen=True):
     contract_size: float = 100_000
     gotobi_days: tuple = (5, 10, 15, 20, 25, 30)
     use_holidays: bool = True
+    trading_timezone: str = "Asia/Tokyo"
 
 
 class GotobiStrategy(Strategy):
@@ -51,14 +53,15 @@ class GotobiStrategy(Strategy):
         self.t_exit = time(h, m, s)
 
         self.trade_qty = config.trade_size * config.contract_size
+        self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
             gotobi_days=set(config.gotobi_days),
             use_holidays=config.use_holidays,
         )
 
         self.current_day: date | None = None
+        self.is_trade_day = False
         self.entered_today = False
-        self.target_trade_date: date | None = None
 
     def on_start(self) -> None:
         self.instrument = self.cache.instrument(self.instrument_id)
@@ -68,17 +71,17 @@ class GotobiStrategy(Strategy):
         self.subscribe_bars(self.bar_type)
 
     def on_bar(self, bar: Bar) -> None:
-        dt = unix_nanos_to_dt(bar.ts_event)
+        dt = _bar_datetime_in_tz(bar.ts_event, self.trading_tz)
         now_d = dt.date()
         now_t = dt.time()
 
         if self.current_day is None or now_d != self.current_day:
             self.current_day = now_d
+            self.is_trade_day = self.calendar.is_gotobi_trading_date(now_d)
             self.entered_today = False
-            self.target_trade_date = self.calendar.resolve_trading_date(now_d)
 
         # Not a gotobi trading date — only ensure flat at exit
-        if self.target_trade_date != now_d:
+        if not self.is_trade_day:
             if now_t >= self.t_exit:
                 self._close_position("DEFENSIVE-EXIT")
             return
@@ -102,7 +105,11 @@ class GotobiStrategy(Strategy):
 
     def _close_position(self, tag: str) -> None:
         for position in self.cache.positions(venue=self.instrument_id.venue):
-            if position.instrument_id == self.instrument_id and not position.is_closed:
+            if (
+                position.instrument_id == self.instrument_id
+                and not position.is_closed
+                and position.strategy_id == self.id
+            ):
                 side = OrderSide.SELL if position.is_long else OrderSide.BUY
                 order = self.order_factory.market(
                     instrument_id=self.instrument_id,
@@ -130,8 +137,8 @@ class GotobiStrategy(Strategy):
 
     def on_reset(self) -> None:
         self.current_day = None
+        self.is_trade_day = False
         self.entered_today = False
-        self.target_trade_date = None
 
 
 class GotobiWithSLConfig(GotobiConfig, frozen=True):
@@ -156,14 +163,15 @@ class GotobiWithSLStrategy(Strategy):
 
         self.trade_qty = config.trade_size * config.contract_size
         self.stop_loss_pct = config.stop_loss_pct
+        self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
             gotobi_days=set(config.gotobi_days),
             use_holidays=config.use_holidays,
         )
 
         self.current_day: date | None = None
+        self.is_trade_day = False
         self.entered_today = False
-        self.target_trade_date: date | None = None
         self._entry_order_id = None
         self._stop_order_id = None
         self._stop_filled = False
@@ -177,18 +185,18 @@ class GotobiWithSLStrategy(Strategy):
         self.subscribe_bars(self.bar_type)
 
     def on_bar(self, bar: Bar) -> None:
-        dt = unix_nanos_to_dt(bar.ts_event)
+        dt = _bar_datetime_in_tz(bar.ts_event, self.trading_tz)
         now_d = dt.date()
         now_t = dt.time()
 
         if self.current_day is None or now_d != self.current_day:
             self.current_day = now_d
+            self.is_trade_day = self.calendar.is_gotobi_trading_date(now_d)
             self.entered_today = False
             self._entry_order_id = None
             self._stop_order_id = None
-            self.target_trade_date = self.calendar.resolve_trading_date(now_d)
 
-        if self.target_trade_date != now_d:
+        if not self.is_trade_day:
             if now_t >= self.t_exit:
                 self._cancel_stop()
                 self._close_position("DEFENSIVE-EXIT")
@@ -226,7 +234,7 @@ class GotobiWithSLStrategy(Strategy):
         )
 
         # Entry fill -> place stop
-        if event.client_order_id == self._entry_order_id:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self.entered_today = True
 
             if self.stop_loss_pct and self.stop_loss_pct > 0:
@@ -253,7 +261,7 @@ class GotobiWithSLStrategy(Strategy):
                 self.log.info(f"STOP {stop_side.name} placed at {stop_px:.5f}")
 
         # Stop fill
-        if self._stop_order_id and event.client_order_id == self._stop_order_id:
+        if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
             self._stop_filled = True
             self._stop_fill_px = float(event.last_px)
             self.log.info(f"STOP FILLED px={event.last_px}")
@@ -279,7 +287,11 @@ class GotobiWithSLStrategy(Strategy):
 
     def _close_position(self, tag: str) -> None:
         for position in self.cache.positions(venue=self.instrument_id.venue):
-            if position.instrument_id == self.instrument_id and not position.is_closed:
+            if (
+                position.instrument_id == self.instrument_id
+                and not position.is_closed
+                and position.strategy_id == self.id
+            ):
                 side = OrderSide.SELL if position.is_long else OrderSide.BUY
                 order = self.order_factory.market(
                     instrument_id=self.instrument_id,
@@ -295,9 +307,16 @@ class GotobiWithSLStrategy(Strategy):
 
     def on_reset(self) -> None:
         self.current_day = None
+        self.is_trade_day = False
         self.entered_today = False
-        self.target_trade_date = None
         self._entry_order_id = None
         self._stop_order_id = None
         self._stop_filled = False
         self._stop_fill_px = None
+
+
+def _bar_datetime_in_tz(ts_event_ns: int, tz: ZoneInfo):
+    dt = unix_nanos_to_dt(ts_event_ns)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(tz)

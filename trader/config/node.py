@@ -4,9 +4,11 @@ Replaces the Backtrader Cerebro-based TradeRunner orchestration.
 """
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Dict, List, Optional, Sequence
 
 from nautilus_trader.backtest.engine import BacktestEngine, BacktestEngineConfig
+from nautilus_trader.model.currencies import Currency
 from nautilus_trader.model.data import Bar, BarType
 from nautilus_trader.model.enums import AccountType, OmsType
 from nautilus_trader.model.identifiers import Venue
@@ -65,8 +67,8 @@ def build_backtest_engine(
         venue=venue,
         oms_type=oms_type,
         account_type=account_type,
-        starting_balances=[Money(starting_balance, venue_currency)],
-        default_leverage=leverage,
+        starting_balances=[Money(starting_balance, Currency.from_str(venue_currency))],
+        default_leverage=Decimal(str(leverage)),
     )
 
     # Add instruments

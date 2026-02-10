@@ -16,6 +16,9 @@ from nautilus_trader.model.objects import Price, Quantity
 def dataframe_to_nautilus_bars(
     df: pd.DataFrame,
     bar_type: BarType,
+    *,
+    price_precision: int | None = None,
+    volume_precision: int = 6,
 ) -> List[Bar]:
     """
     Convert a normalized OHLCV DataFrame to a list of NautilusTrader Bar objects.
@@ -25,18 +28,25 @@ def dataframe_to_nautilus_bars(
     if df is None or df.empty:
         return []
 
-    price_prec = bar_type.instrument_id.symbol.value
     bars: List[Bar] = []
+
+    def _format_price(value: float) -> str:
+        if price_precision is None:
+            return f"{value:.10f}".rstrip("0").rstrip(".")
+        return f"{value:.{price_precision}f}"
+
+    def _format_volume(value: float) -> str:
+        return f"{value:.{volume_precision}f}".rstrip("0").rstrip(".")
 
     for idx, row in df.iterrows():
         ts_ns = pd.Timestamp(idx).value  # nanoseconds since epoch
         bar = Bar(
             bar_type=bar_type,
-            open=Price.from_str(f"{row['open']:.10f}".rstrip("0").rstrip(".")),
-            high=Price.from_str(f"{row['high']:.10f}".rstrip("0").rstrip(".")),
-            low=Price.from_str(f"{row['low']:.10f}".rstrip("0").rstrip(".")),
-            close=Price.from_str(f"{row['close']:.10f}".rstrip("0").rstrip(".")),
-            volume=Quantity.from_str(f"{row['volume']:.6f}".rstrip("0").rstrip(".")),
+            open=Price.from_str(_format_price(row["open"])),
+            high=Price.from_str(_format_price(row["high"])),
+            low=Price.from_str(_format_price(row["low"])),
+            close=Price.from_str(_format_price(row["close"])),
+            volume=Quantity.from_str(_format_volume(row["volume"])),
             ts_event=ts_ns,
             ts_init=ts_ns,
         )

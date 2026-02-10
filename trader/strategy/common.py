@@ -45,9 +45,16 @@ class GotobiCalendar:
         return _prev_business_day(shifted, self._holiday_checker)
 
     def is_gotobi_trading_date(self, d: date) -> bool:
-        """Check if today is the resolved trading date for any gotobi base date."""
-        resolved = self.resolve_trading_date(d)
-        return resolved == d
+        """
+        Check if `d` is an effective gotobi trading date.
+
+        This is true when any configured gotobi base date resolves (after
+        weekend/holiday rollback) to `d`.
+        """
+        for base in _candidate_base_dates_for_day(d, self.gotobi_days):
+            if self.resolve_trading_date(base) == d:
+                return True
+        return False
 
 
 def _weekend_to_prev_friday(d: date) -> date:
@@ -82,3 +89,29 @@ def _build_holiday_checker(
     except Exception:
         s = frozenset(notrade_days) if notrade_days else frozenset()
         return lambda d: d in s
+
+
+def _candidate_base_dates_for_day(d: date, gotobi_days: AbstractSet[int]) -> list[date]:
+    """
+    Candidate gotobi base dates whose resolved trade date can match `d`.
+
+    Most cases come from the same month, but a very early-month gotobi base date
+    (e.g., the 5th) can roll back into the previous month, so we also check the
+    next month.
+    """
+    candidates: list[date] = []
+
+    def _append_month(year: int, month: int) -> None:
+        for day in sorted(gotobi_days):
+            try:
+                candidates.append(date(year, month, day))
+            except ValueError:
+                continue
+
+    _append_month(d.year, d.month)
+    if d.month == 12:
+        _append_month(d.year + 1, 1)
+    else:
+        _append_month(d.year, d.month + 1)
+
+    return candidates

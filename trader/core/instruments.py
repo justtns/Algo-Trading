@@ -5,6 +5,7 @@ from config/contracts.json definitions.
 from __future__ import annotations
 
 import json
+from decimal import Decimal
 from pathlib import Path
 from typing import Dict
 
@@ -74,10 +75,10 @@ def make_fx_pair(
         min_quantity=Quantity(1, size_precision),
         max_price=None,
         min_price=None,
-        margin_init=Money(0, quote_ccy),
-        margin_maint=Money(0, quote_ccy),
-        maker_fee=Money(0, quote_ccy),
-        taker_fee=Money(0, quote_ccy),
+        margin_init=Decimal("0"),
+        margin_maint=Decimal("0"),
+        maker_fee=Decimal("0"),
+        taker_fee=Decimal("0"),
         ts_event=0,
         ts_init=0,
     )
