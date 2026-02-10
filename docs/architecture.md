@@ -80,6 +80,7 @@ trader/
 │   ├── gotobi.py         # GotobiStrategy, GotobiWithSLStrategy
 │   ├── mean_reversion.py # MeanReversionStrategy
 │   ├── breakout.py       # BreakoutStrategy
+│   ├── rsi_macd_ma.py    # RsiMacdMaStrategy
 │   ├── signals.py        # Pure signal functions
 │   └── features.py       # Feature engineering (EMA, ATR, Z-score)
 ├── exec/

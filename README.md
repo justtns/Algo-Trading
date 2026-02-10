@@ -6,7 +6,7 @@ NautilusTrader-based algorithmic trading system with MetaTrader 5 and Interactiv
 
 - **NautilusTrader engine** — Cython-optimized event-driven architecture for backtesting and live trading
 - **Gotobi FX strategy** — Japanese settlement day trading with optional stop-loss
-- **Mean reversion & breakout strategies** — Signal-based strategies
+- **Mean reversion, breakout, and RSI/MACD/MA strategies** — Signal-based strategies
 - **MetaTrader 5 adapter** — Custom adapter with tick polling, bar aggregation, and order execution
 - **IBKR adapter** — Native NautilusTrader Interactive Brokers integration
 - **FX instrument factory** — CurrencyPair builder from contracts.json config
@@ -29,7 +29,7 @@ trader/
   config/         # BacktestEngine / TradingNode builders
   adapters/       # MetaTrader 5 (custom) + IBKR (native) adapters
   data/           # pipeline, bar builder, data catalog
-  strategy/       # Gotobi, mean reversion, breakout strategies
+  strategy/       # Gotobi, mean reversion, breakout, RSI/MACD/MA strategies
   exec/           # risk management
   portfolio/      # position tracking, PnL
   interfaces/     # Telegram/HTTP stubs
@@ -43,7 +43,7 @@ docs/             # setup, architecture, strategies, adapters, migration
 
 - [Setup Guide](docs/setup.md) — installation, broker setup, data sources
 - [Architecture](docs/architecture.md) — system design and data flow
-- [Strategies](docs/strategies.md) — Gotobi, mean reversion, breakout reference
+- [Strategies](docs/strategies.md) — Gotobi, mean reversion, breakout, RSI/MACD/MA reference
 - [Adapters](docs/adapters.md) — MT5 and IBKR configuration guide
 - [Migration Notes](docs/migration.md) — Backtrader to NautilusTrader mapping
 
@@ -55,6 +55,7 @@ docs/             # setup, architecture, strategies, adapters, migration
 | `GotobiWithSLStrategy` | Gotobi with stop-loss | `GotobiWithSLConfig` |
 | `MeanReversionStrategy` | Buy below MA, sell above MA | `MeanReversionConfig` |
 | `BreakoutStrategy` | Buy new highs, sell new lows | `BreakoutConfig` |
+| `RsiMacdMaStrategy` | RSI + MACD histogram curl + MA confirmation | `RsiMacdMaConfig` |
 
 ## Broker Support
 

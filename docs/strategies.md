@@ -83,6 +83,52 @@ Enters only when no existing position is open.
 
 ---
 
+## RSI + MACD Histogram Curl + MA Strategy
+
+Located in `trader/strategy/rsi_macd_ma.py`.
+
+**Config: `RsiMacdMaConfig`**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `instrument_id` | str | required | NautilusTrader instrument ID |
+| `bar_type` | str | required | Bar type string |
+| `trade_size` | float | 1.0 | Trade size |
+| `contract_size` | float | 100,000 | Lot/contract size multiplier |
+| `max_bars` | int | 300 | Rolling bars to keep |
+| `rsi_period` | int | 14 | RSI lookback |
+| `rsi_oversold` | float | 30.0 | RSI oversold threshold |
+| `rsi_overbought` | float | 70.0 | RSI overbought threshold |
+| `macd_fast` | int | 12 | MACD fast EMA period |
+| `macd_slow` | int | 26 | MACD slow EMA period |
+| `macd_signal` | int | 9 | MACD signal EMA period |
+| `ma_fast` | int | 20 | Fast MA period |
+| `ma_slow` | int | 50 | Slow MA period |
+| `stop_loss_pct` | float or None | None | Stop distance fraction from entry (e.g. 0.003 = 0.3%) |
+| `close_on_neutral` | bool | True | Close open position when signal becomes neutral |
+| `exit_time` | str or None | None | Time-based daily exit (HH:MM:SS) |
+| `trading_timezone` | str | "UTC" | Timezone used for `exit_time` |
+
+**Signal logic** (from `trader/strategy/signals.py`):
+- SELL when:
+  - RSI is oversold
+  - MACD histogram curls downward over the last 3 bars
+  - Moving averages are bearish (`ma_fast < ma_slow` and close < fast MA)
+- BUY when:
+  - RSI is overbought
+  - MACD histogram curls upward over the last 3 bars
+  - Moving averages are bullish (`ma_fast > ma_slow` and close > fast MA)
+- Otherwise neutral
+
+**Position behavior:**
+- Enters when signal appears and no position is open.
+- If signal flips against an open position, submits a market order to close.
+- If `close_on_neutral=True`, neutral signal triggers a market close.
+- If `exit_time` is set, closes position at/after that time and skips new entries for bars after cutoff.
+- If `stop_loss_pct` is set, places stop-market protection after entry fill.
+
+---
+
 ## Breakout Strategy
 
 Located in `trader/strategy/breakout.py`.
