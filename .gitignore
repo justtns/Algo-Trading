@@ -7,3 +7,4 @@
 /trader/.ipynb_checkpoints
 config/accounts.yaml
 /tests/__pycache__
+config/secrets.yaml
