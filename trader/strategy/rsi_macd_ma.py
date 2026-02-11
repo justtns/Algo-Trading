@@ -13,7 +13,9 @@ from nautilus_trader.core.datetime import unix_nanos_to_dt
 from nautilus_trader.model.data import Bar, BarType
 from nautilus_trader.model.enums import OrderSide, TimeInForce
 from nautilus_trader.model.events import (
+    OrderCanceled,
     OrderDenied,
+    OrderExpired,
     OrderFilled,
     OrderRejected,
     PositionClosed,
@@ -22,6 +24,7 @@ from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.objects import Price, Quantity
 from nautilus_trader.trading.strategy import Strategy
 
+from trader.strategy.live_helpers import LiveExecutionMixin, resolve_trade_quantity
 from trader.strategy.signals import rsi_macd_ma_signal
 
 
@@ -42,9 +45,11 @@ class RsiMacdMaConfig(StrategyConfig, frozen=True):
     close_on_neutral: bool = True
     exit_time: str | None = None
     trading_timezone: str = "UTC"
+    time_in_force: str = "FOK"
+    exec_client_id: str | None = None
 
 
-class RsiMacdMaStrategy(Strategy):
+class RsiMacdMaStrategy(LiveExecutionMixin, Strategy):
     """
     Strategy behavior:
     - SELL when RSI is oversold + MACD histogram curls down + MAs bearish.
@@ -61,6 +66,11 @@ class RsiMacdMaStrategy(Strategy):
         self.bar_type = BarType.from_str(config.bar_type)
         self.trade_size = config.trade_size
         self.trade_qty = config.trade_size  # will be rescaled once instrument is loaded
+        self._configure_live_execution(
+            exec_client_id=config.exec_client_id,
+            time_in_force=config.time_in_force,
+            default_tif=TimeInForce.FOK,
+        )
         self.max_bars = config.max_bars
 
         self.rsi_period = config.rsi_period
@@ -83,14 +93,17 @@ class RsiMacdMaStrategy(Strategy):
         self._stop_order_id = None
         self._stop_filled = False
         self._pending_close_position_ids: set = set()
+        self._close_order_to_position_id: dict = {}
 
     def on_start(self) -> None:
         self.instrument = self.cache.instrument(self.instrument_id)
         if self.instrument is None:
             self.log.error(f"Instrument {self.instrument_id} not found in cache")
             return
-        lot_size = float(getattr(self.instrument, "lot_size", 1.0) or 1.0)
-        self.trade_qty = self.trade_size * lot_size
+        self.trade_qty = resolve_trade_quantity(
+            instrument=self.instrument,
+            configured_trade_size=self.trade_size,
+        )
         self.subscribe_bars(self.bar_type)
 
     def on_bar(self, bar: Bar) -> None:
@@ -157,26 +170,16 @@ class RsiMacdMaStrategy(Strategy):
         self._cancel_stop()
         self._close_position(pos, tag="SIGNAL-FLIP")
 
-    def _current_position(self):
-        for pos in self.cache.positions(venue=self.instrument_id.venue):
-            if (
-                pos.instrument_id == self.instrument_id
-                and not pos.is_closed
-                and pos.strategy_id == self.id
-            ):
-                return pos
-        return None
-
     def _enter(self, side: OrderSide) -> None:
         qty = Quantity(abs(self.trade_qty), self.instrument.size_precision)
         order = self.order_factory.market(
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=qty,
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
         self._entry_order_id = order.client_order_id
-        self.submit_order(order)
+        self._submit_order(order)
 
     def _close_position(self, pos, tag: str) -> None:
         side = OrderSide.SELL if pos.is_long else OrderSide.BUY
@@ -184,10 +187,10 @@ class RsiMacdMaStrategy(Strategy):
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=Quantity(abs(pos.quantity), self.instrument.size_precision),
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
-        self.submit_order(order, position_id=pos.id)
-        self._pending_close_position_ids.add(pos.id)
+        self._submit_order(order, position_id=pos.id)
+        self._track_pending_close(position_id=pos.id, client_order_id=order.client_order_id)
         self.log.info(f"{tag} {self.instrument_id} qty={pos.quantity}")
 
     def on_order_filled(self, event: OrderFilled) -> None:
@@ -216,7 +219,7 @@ class RsiMacdMaStrategy(Strategy):
                     time_in_force=TimeInForce.GTC,
                 )
                 self._stop_order_id = stop_order.client_order_id
-                self.submit_order(stop_order)
+                self._submit_order(stop_order)
                 self.log.info(f"STOP {stop_side.name} placed at {stop_px:.5f}")
 
         if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
@@ -229,15 +232,37 @@ class RsiMacdMaStrategy(Strategy):
             self._entry_order_id = None
         if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
             self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_order_denied(self, event: OrderDenied) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
         if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
             self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_canceled(self, event: OrderCanceled) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
+            self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_expired(self, event: OrderExpired) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
+            self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_position_closed(self, event: PositionClosed) -> None:
-        self._pending_close_position_ids.discard(event.position_id)
+        self._release_pending_close_on_position_closed(position_id=event.position_id)
         tag = "STOP-OUT" if self._stop_filled else "EXIT"
         self.log.info(
             f"RSI-MACD-MA {tag} {event.instrument_id} "
@@ -262,6 +287,7 @@ class RsiMacdMaStrategy(Strategy):
         self._stop_order_id = None
         self._stop_filled = False
         self._pending_close_position_ids.clear()
+        self._close_order_to_position_id.clear()
 
     def _cancel_stop(self) -> None:
         if self._stop_order_id is None:

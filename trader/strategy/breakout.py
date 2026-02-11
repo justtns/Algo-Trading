@@ -12,7 +12,9 @@ from nautilus_trader.config import StrategyConfig
 from nautilus_trader.model.data import Bar, BarType
 from nautilus_trader.model.enums import OrderSide, TimeInForce
 from nautilus_trader.model.events import (
+    OrderCanceled,
     OrderDenied,
+    OrderExpired,
     OrderFilled,
     OrderRejected,
     PositionClosed,
@@ -22,6 +24,7 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.trading.strategy import Strategy
 
 from trader.strategy.signals import breakout_signal
+from trader.strategy.live_helpers import LiveExecutionMixin, resolve_trade_quantity
 
 
 class BreakoutConfig(StrategyConfig, frozen=True):
@@ -31,9 +34,11 @@ class BreakoutConfig(StrategyConfig, frozen=True):
     allocated_capital: float | None = None
     margin_rate: float = 0.02
     max_bars: int = 100
+    time_in_force: str = "FOK"
+    exec_client_id: str | None = None
 
 
-class BreakoutStrategy(Strategy):
+class BreakoutStrategy(LiveExecutionMixin, Strategy):
     """
     Breakout strategy that accumulates bars, computes a signal via
     breakout_signal(), and enters positions on new highs/lows.
@@ -47,10 +52,16 @@ class BreakoutStrategy(Strategy):
         self._allocated_capital = config.allocated_capital
         self.margin_rate = config.margin_rate
         self.trade_qty = config.trade_size  # scaled once instrument is loaded
+        self._configure_live_execution(
+            exec_client_id=config.exec_client_id,
+            time_in_force=config.time_in_force,
+            default_tif=TimeInForce.FOK,
+        )
         self.max_bars = config.max_bars
         self._bars: list[dict] = []
         self._entry_order_id = None
         self._pending_close_position_ids: set = set()
+        self._close_order_to_position_id: dict = {}
 
     def on_start(self) -> None:
         self.instrument = self.cache.instrument(self.instrument_id)
@@ -98,26 +109,16 @@ class BreakoutStrategy(Strategy):
     def _has_position(self) -> bool:
         return self._current_position() is not None
 
-    def _current_position(self):
-        for pos in self.cache.positions(venue=self.instrument_id.venue):
-            if (
-                pos.instrument_id == self.instrument_id
-                and not pos.is_closed
-                and pos.strategy_id == self.id
-            ):
-                return pos
-        return None
-
     def _enter(self, side: OrderSide) -> None:
         qty = Quantity(abs(self.trade_qty), self.instrument.size_precision)
         order = self.order_factory.market(
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=qty,
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
         self._entry_order_id = order.client_order_id
-        self.submit_order(order)
+        self._submit_order(order)
 
     def _close_position(self, position, tag: str) -> None:
         side = OrderSide.SELL if position.is_long else OrderSide.BUY
@@ -125,10 +126,10 @@ class BreakoutStrategy(Strategy):
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=Quantity(abs(position.quantity), self.instrument.size_precision),
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
-        self.submit_order(order, position_id=position.id)
-        self._pending_close_position_ids.add(position.id)
+        self._submit_order(order, position_id=position.id)
+        self._track_pending_close(position_id=position.id, client_order_id=order.client_order_id)
         self.log.info(f"{tag} {self.instrument_id} qty={position.quantity}")
 
     def on_order_filled(self, event: OrderFilled) -> None:
@@ -142,13 +143,29 @@ class BreakoutStrategy(Strategy):
     def on_order_rejected(self, event: OrderRejected) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_order_denied(self, event: OrderDenied) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_canceled(self, event: OrderCanceled) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_expired(self, event: OrderExpired) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_position_closed(self, event: PositionClosed) -> None:
-        self._pending_close_position_ids.discard(event.position_id)
+        self._release_pending_close_on_position_closed(position_id=event.position_id)
         self.log.info(
             f"BREAKOUT CLOSED {event.instrument_id} "
             f"realized_pnl={event.realized_pnl}"
@@ -165,11 +182,12 @@ class BreakoutStrategy(Strategy):
         self._bars.clear()
         self._entry_order_id = None
         self._pending_close_position_ids.clear()
+        self._close_order_to_position_id.clear()
 
     def _refresh_trade_qty(self) -> None:
-        lot_size = float(getattr(self.instrument, "lot_size", 1.0) or 1.0)
-        if self._allocated_capital is not None and self.margin_rate > 0:
-            # Approximate quantity from allocated capital and margin rate.
-            self.trade_qty = self._allocated_capital / self.margin_rate
-        else:
-            self.trade_qty = self._configured_trade_size * lot_size
+        self.trade_qty = resolve_trade_quantity(
+            instrument=self.instrument,
+            configured_trade_size=self._configured_trade_size,
+            allocated_capital=self._allocated_capital,
+            margin_rate=self.margin_rate,
+        )

@@ -14,7 +14,9 @@ from nautilus_trader.core.datetime import unix_nanos_to_dt
 from nautilus_trader.model.data import Bar, BarType
 from nautilus_trader.model.enums import OrderSide, TimeInForce
 from nautilus_trader.model.events import (
+    OrderCanceled,
     OrderDenied,
+    OrderExpired,
     OrderFilled,
     OrderRejected,
     PositionClosed,
@@ -24,6 +26,7 @@ from nautilus_trader.model.objects import Price, Quantity
 from nautilus_trader.trading.strategy import Strategy
 
 from trader.strategy.common import GotobiCalendar
+from trader.strategy.live_helpers import LiveExecutionMixin, resolve_trade_quantity
 
 
 class GotobiConfig(StrategyConfig, frozen=True):
@@ -37,9 +40,11 @@ class GotobiConfig(StrategyConfig, frozen=True):
     gotobi_days: tuple = (5, 10, 15, 20, 25, 30)
     use_holidays: bool = True
     trading_timezone: str = "Asia/Tokyo"
+    time_in_force: str = "FOK"
+    exec_client_id: str | None = None
 
 
-class GotobiStrategy(Strategy):
+class GotobiStrategy(LiveExecutionMixin, Strategy):
     """
     Enters a position on gotobi settlement days at a configured time and exits
     at a later time the same day. Gotobi days are the 5th, 10th, 15th, 20th,
@@ -60,6 +65,11 @@ class GotobiStrategy(Strategy):
         self._allocated_capital = config.allocated_capital
         self.margin_rate = config.margin_rate
         self.trade_qty = config.trade_size  # scaled once instrument is loaded
+        self._configure_live_execution(
+            exec_client_id=config.exec_client_id,
+            time_in_force=config.time_in_force,
+            default_tif=TimeInForce.FOK,
+        )
         self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
             gotobi_days=set(config.gotobi_days),
@@ -71,6 +81,7 @@ class GotobiStrategy(Strategy):
         self.entered_today = False
         self._entry_order_id = None
         self._pending_close_position_ids: set = set()
+        self._close_order_to_position_id: dict = {}
 
     def on_start(self) -> None:
         self.instrument = self.cache.instrument(self.instrument_id)
@@ -91,6 +102,7 @@ class GotobiStrategy(Strategy):
             self.entered_today = self._current_position() is not None
             self._entry_order_id = None
             self._pending_close_position_ids.clear()
+            self._close_order_to_position_id.clear()
 
         # Not a gotobi trading date - only ensure flat at exit.
         if not self.is_trade_day:
@@ -112,16 +124,6 @@ class GotobiStrategy(Strategy):
         if now_t >= self.t_exit:
             self._close_current_position("TIME-EXIT")
 
-    def _current_position(self):
-        for position in self.cache.positions(venue=self.instrument_id.venue):
-            if (
-                position.instrument_id == self.instrument_id
-                and not position.is_closed
-                and position.strategy_id == self.id
-            ):
-                return position
-        return None
-
     def _enter(self) -> None:
         side = OrderSide.BUY if self.trade_qty > 0 else OrderSide.SELL
         qty = Quantity(abs(self.trade_qty), self.instrument.size_precision)
@@ -129,10 +131,10 @@ class GotobiStrategy(Strategy):
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=qty,
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
         self._entry_order_id = order.client_order_id
-        self.submit_order(order)
+        self._submit_order(order)
 
     def _close_current_position(self, tag: str) -> None:
         position = self._current_position()
@@ -143,10 +145,10 @@ class GotobiStrategy(Strategy):
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=Quantity(abs(position.quantity), self.instrument.size_precision),
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
-        self.submit_order(order, position_id=position.id)
-        self._pending_close_position_ids.add(position.id)
+        self._submit_order(order, position_id=position.id)
+        self._track_pending_close(position_id=position.id, client_order_id=order.client_order_id)
         self.log.info(f"{tag} {self.instrument_id} qty={position.quantity}")
 
     def on_order_filled(self, event: OrderFilled) -> None:
@@ -161,13 +163,29 @@ class GotobiStrategy(Strategy):
     def on_order_rejected(self, event: OrderRejected) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_order_denied(self, event: OrderDenied) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_canceled(self, event: OrderCanceled) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_expired(self, event: OrderExpired) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_position_closed(self, event: PositionClosed) -> None:
-        self._pending_close_position_ids.discard(event.position_id)
+        self._release_pending_close_on_position_closed(position_id=event.position_id)
         self.log.info(
             f"TRADE CLOSED {event.instrument_id} "
             f"realized_pnl={event.realized_pnl}"
@@ -184,20 +202,22 @@ class GotobiStrategy(Strategy):
         self.entered_today = False
         self._entry_order_id = None
         self._pending_close_position_ids.clear()
+        self._close_order_to_position_id.clear()
 
     def _refresh_trade_qty(self) -> None:
-        lot_size = float(getattr(self.instrument, "lot_size", 1.0) or 1.0)
-        if self._allocated_capital is not None and self.margin_rate > 0:
-            self.trade_qty = self._allocated_capital / self.margin_rate
-        else:
-            self.trade_qty = self._configured_trade_size * lot_size
+        self.trade_qty = resolve_trade_quantity(
+            instrument=self.instrument,
+            configured_trade_size=self._configured_trade_size,
+            allocated_capital=self._allocated_capital,
+            margin_rate=self.margin_rate,
+        )
 
 
 class GotobiWithSLConfig(GotobiConfig, frozen=True):
     stop_loss_pct: float | None = None
 
 
-class GotobiWithSLStrategy(Strategy):
+class GotobiWithSLStrategy(LiveExecutionMixin, Strategy):
     """
     Gotobi strategy with stop-loss protection. After entry, a stop-market order
     is placed. At exit time, the stop is cancelled and position is closed.
@@ -217,6 +237,11 @@ class GotobiWithSLStrategy(Strategy):
         self._allocated_capital = config.allocated_capital
         self.margin_rate = config.margin_rate
         self.trade_qty = config.trade_size  # scaled once instrument is loaded
+        self._configure_live_execution(
+            exec_client_id=config.exec_client_id,
+            time_in_force=config.time_in_force,
+            default_tif=TimeInForce.FOK,
+        )
         self.stop_loss_pct = config.stop_loss_pct
         self.trading_tz = ZoneInfo(config.trading_timezone)
         self.calendar = GotobiCalendar(
@@ -232,6 +257,7 @@ class GotobiWithSLStrategy(Strategy):
         self._stop_filled = False
         self._stop_fill_px = None
         self._pending_close_position_ids: set = set()
+        self._close_order_to_position_id: dict = {}
 
     def on_start(self) -> None:
         self.instrument = self.cache.instrument(self.instrument_id)
@@ -253,6 +279,7 @@ class GotobiWithSLStrategy(Strategy):
             self.entered_today = position is not None
             self._entry_order_id = None
             self._pending_close_position_ids.clear()
+            self._close_order_to_position_id.clear()
             if position is None:
                 self._cancel_stop()
 
@@ -276,10 +303,10 @@ class GotobiWithSLStrategy(Strategy):
                 instrument_id=self.instrument_id,
                 order_side=side,
                 quantity=qty,
-                time_in_force=TimeInForce.FOK,
+                time_in_force=self.time_in_force,
             )
             self._entry_order_id = order.client_order_id
-            self.submit_order(order)
+            self._submit_order(order)
 
         # Scheduled exit.
         if now_t >= self.t_exit:
@@ -318,7 +345,7 @@ class GotobiWithSLStrategy(Strategy):
                     time_in_force=TimeInForce.GTC,
                 )
                 self._stop_order_id = stop_order.client_order_id
-                self.submit_order(stop_order)
+                self._submit_order(stop_order)
                 self.log.info(f"STOP {stop_side.name} placed at {stop_px:.5f}")
 
         # Stop fill.
@@ -334,15 +361,37 @@ class GotobiWithSLStrategy(Strategy):
             self._entry_order_id = None
         if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
             self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_order_denied(self, event: OrderDenied) -> None:
         if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
             self._entry_order_id = None
         if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
             self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_canceled(self, event: OrderCanceled) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
+            self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
+
+    def on_order_expired(self, event: OrderExpired) -> None:
+        if self._entry_order_id is not None and event.client_order_id == self._entry_order_id:
+            self._entry_order_id = None
+            return
+        if self._stop_order_id is not None and event.client_order_id == self._stop_order_id:
+            self._stop_order_id = None
+            return
+        self._release_pending_close_on_failed_order(client_order_id=event.client_order_id)
 
     def on_position_closed(self, event: PositionClosed) -> None:
-        self._pending_close_position_ids.discard(event.position_id)
+        self._release_pending_close_on_position_closed(position_id=event.position_id)
         tag = "STOP-OUT" if self._stop_filled else "TIME-EXIT"
         self.log.info(
             f"TRADE {tag} {event.instrument_id} "
@@ -352,11 +401,12 @@ class GotobiWithSLStrategy(Strategy):
         self._stop_fill_px = None
 
     def _refresh_trade_qty(self) -> None:
-        lot_size = float(getattr(self.instrument, "lot_size", 1.0) or 1.0)
-        if self._allocated_capital is not None and self.margin_rate > 0:
-            self.trade_qty = self._allocated_capital / self.margin_rate
-        else:
-            self.trade_qty = self._configured_trade_size * lot_size
+        self.trade_qty = resolve_trade_quantity(
+            instrument=self.instrument,
+            configured_trade_size=self._configured_trade_size,
+            allocated_capital=self._allocated_capital,
+            margin_rate=self.margin_rate,
+        )
 
     def _cancel_stop(self) -> None:
         if self._stop_order_id is None:
@@ -365,16 +415,6 @@ class GotobiWithSLStrategy(Strategy):
         if order and order.is_open:
             self.cancel_order(order)
         self._stop_order_id = None
-
-    def _current_position(self):
-        for position in self.cache.positions(venue=self.instrument_id.venue):
-            if (
-                position.instrument_id == self.instrument_id
-                and not position.is_closed
-                and position.strategy_id == self.id
-            ):
-                return position
-        return None
 
     def _close_current_position(self, tag: str) -> None:
         position = self._current_position()
@@ -385,10 +425,10 @@ class GotobiWithSLStrategy(Strategy):
             instrument_id=self.instrument_id,
             order_side=side,
             quantity=Quantity(abs(position.quantity), self.instrument.size_precision),
-            time_in_force=TimeInForce.FOK,
+            time_in_force=self.time_in_force,
         )
-        self.submit_order(order, position_id=position.id)
-        self._pending_close_position_ids.add(position.id)
+        self._submit_order(order, position_id=position.id)
+        self._track_pending_close(position_id=position.id, client_order_id=order.client_order_id)
         self.log.info(f"{tag} {self.instrument_id} qty={position.quantity}")
 
     def on_stop(self) -> None:
@@ -406,6 +446,7 @@ class GotobiWithSLStrategy(Strategy):
         self._stop_filled = False
         self._stop_fill_px = None
         self._pending_close_position_ids.clear()
+        self._close_order_to_position_id.clear()
 
 
 def _bar_datetime_in_tz(ts_event_ns: int, tz: ZoneInfo):

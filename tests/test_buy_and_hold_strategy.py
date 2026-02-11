@@ -51,8 +51,8 @@ class _DummyLoopStrategy(_DummyStrategy):
         self._order_counter += 1
         return SimpleNamespace(client_order_id=f"O-{self._order_counter}", **kwargs)
 
-    def submit_order(self, order, position_id=None) -> None:
-        self.submitted.append((order, position_id))
+    def submit_order(self, order, position_id=None, client_id=None) -> None:
+        self.submitted.append((order, position_id, client_id))
 
     def _schedule_time_exit(self) -> None:
         return
@@ -98,6 +98,7 @@ def test_reenters_after_position_closed_event() -> None:
     OneMinuteBuyHoldStrategy.on_bar(strategy, first_bar)
     assert len(strategy.submitted) == 1
     assert strategy._entry_order_id == "O-1"
+    assert strategy.submitted[0][1] is None
 
     OneMinuteBuyHoldStrategy.on_position_closed(strategy, close_event)
     assert strategy._entry_ts_ns is None
@@ -105,6 +106,7 @@ def test_reenters_after_position_closed_event() -> None:
     OneMinuteBuyHoldStrategy.on_bar(strategy, second_bar)
     assert len(strategy.submitted) == 2
     assert strategy._entry_order_id == "O-2"
+    assert strategy.submitted[1][1] is None
 
 
 def test_retries_entry_after_rejection() -> None:
@@ -117,6 +119,42 @@ def test_retries_entry_after_rejection() -> None:
 
     reject_event = SimpleNamespace(client_order_id="O-1", reason="broker reject")
     OneMinuteBuyHoldStrategy.on_order_rejected(strategy, reject_event)
+    assert strategy._entry_order_id is None
+    assert strategy._entry_ts_ns is None
+    assert strategy._entered is False
+
+    OneMinuteBuyHoldStrategy.on_bar(strategy, second_bar)
+    assert strategy._entry_order_id == "O-2"
+
+
+def test_submit_order_uses_explicit_exec_client_id_when_configured() -> None:
+    strategy = _DummyLoopStrategy()
+    strategy.exec_client_id = "IDEALPRO"
+    order = strategy._build_order(
+        instrument_id=strategy.instrument_id,
+        order_side="BUY",
+        quantity=1,
+        time_in_force="IOC",
+    )
+
+    OneMinuteBuyHoldStrategy._submit_order(strategy, order)
+
+    assert strategy.submitted[-1][2] == "IDEALPRO"
+
+
+def test_retries_entry_after_canceled() -> None:
+    strategy = _DummyLoopStrategy()
+    first_bar = SimpleNamespace(ts_event=1_000_000_000)
+    second_bar = SimpleNamespace(ts_event=2_000_000_000)
+
+    OneMinuteBuyHoldStrategy.on_bar(strategy, first_bar)
+    assert strategy._entry_order_id == "O-1"
+
+    cancel_event = SimpleNamespace(
+        client_order_id="O-1",
+        instrument_id="EURUSD.MT5",
+    )
+    OneMinuteBuyHoldStrategy.on_order_canceled(strategy, cancel_event)
     assert strategy._entry_order_id is None
     assert strategy._entry_ts_ns is None
     assert strategy._entered is False
