@@ -6,3 +6,4 @@
 /trader/**/__pycache__/
 /trader/.ipynb_checkpoints
 config/accounts.yaml
+/tests/__pycache__

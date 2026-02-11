@@ -9,12 +9,15 @@ Requires-Dist: pandas<3.0,>=2.0
 Requires-Dist: pyarrow>=14.0
 Requires-Dist: holidays>=0.40
 Requires-Dist: pyyaml>=6.0
+Requires-Dist: aiosqlite>=0.19
 Provides-Extra: ibkr
 Requires-Dist: nautilus_trader[ibkr]; extra == "ibkr"
 Provides-Extra: metatrader
 Requires-Dist: MetaTrader5>=5.0; extra == "metatrader"
 Provides-Extra: polygon
 Requires-Dist: polygon-api-client>=1.13; extra == "polygon"
+Provides-Extra: charts
+Requires-Dist: plotly>=5.0; extra == "charts"
 Provides-Extra: notebooks
 Requires-Dist: nbformat>=5.9; extra == "notebooks"
 Requires-Dist: jupyterlab>=4.0; extra == "notebooks"

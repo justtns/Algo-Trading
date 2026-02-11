@@ -31,7 +31,7 @@ class MetaTrader5DataClientConfig(LiveDataClientConfig, frozen=True):
     mt5_path: str | None = None
     bar_seconds: int = 60
     poll_interval: float = 1.0
-    max_batch: int = 500
+    max_batch: int = 5000
     lookback_sec: int = 5
 
 
@@ -123,17 +123,24 @@ class MetaTrader5DataClient(LiveMarketDataClient):
 
     async def _poll_ticks(self, symbol: str, bar_type: BarType) -> None:
         """
-        Main polling loop. Replicates MetaTraderLiveStreamer.stream_ticks_to_bars logic.
+        Main polling loop. Queries ticks anchored to last_seen_ms to avoid
+        missing data under lag, and processes all ticks from the first poll
+        onwards (no priming waste).
         """
         mt5 = self._connection.mt5
         last_seen_ms = 0
-        primed = False
 
         try:
             while True:
-                # Always query a recent sliding window to avoid drifting the cursor
-                # through historical/future-stamped tick data.
-                query_from = datetime.now(timezone.utc) - timedelta(seconds=self._lookback_sec)
+                # Anchor query to last_seen_ms with a small safety margin,
+                # falling back to lookback window on first poll.
+                if last_seen_ms > 0:
+                    query_from = datetime.fromtimestamp(
+                        (last_seen_ms - 500) / 1000.0, tz=timezone.utc
+                    )
+                else:
+                    query_from = datetime.now(timezone.utc) - timedelta(seconds=self._lookback_sec)
+
                 ticks = mt5.copy_ticks_from(symbol, query_from, self._max_batch, mt5.COPY_TICKS_ALL)
 
                 if ticks is None:
@@ -149,17 +156,11 @@ class MetaTrader5DataClient(LiveMarketDataClient):
                     has_ask = "ask" in ticks.dtype.names
                     has_last = "last" in ticks.dtype.names
 
-                    if not primed:
-                        latest_tick = ticks[-1]
-                        latest_ms = (
-                            int(latest_tick["time_msc"])
-                            if has_time_msc
-                            else int(float(latest_tick["time"]) * 1000)
+                    if len(ticks) >= self._max_batch:
+                        self._log.warning(
+                            "Hit max_batch (%d) for %s — ticks may have been dropped",
+                            self._max_batch, symbol,
                         )
-                        last_seen_ms = max(last_seen_ms, latest_ms)
-                        primed = True
-                        await asyncio.sleep(self._poll_interval)
-                        continue
 
                     for tick in ticks:
                         ts_ms = int(tick["time_msc"]) if has_time_msc else int(float(tick["time"]) * 1000)

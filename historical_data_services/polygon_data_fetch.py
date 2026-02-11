@@ -1,10 +1,14 @@
+import logging
 import os
+import time
 from pathlib import Path
 from typing import Optional, Iterable
+from datetime import datetime, timedelta
+
 import pandas as pd
 from polygon import RESTClient
-from datetime import datetime, timedelta
-import time
+
+logger = logging.getLogger(__name__)
 
 # --- Helpers -----------------------------------------------------------------
 def _fx_symbol_to_polygon(symbol: str) -> str:
@@ -45,6 +49,38 @@ def _drange(start_d, end_d, chunk_days=30):
         yield cur, chunk_end
         cur = chunk_end + one
 
+
+def _adaptive_pause(rate_limit: int = 5, window_sec: float = 60.0) -> float:
+    """Calculate pause to stay under rate limit with headroom."""
+    return window_sec / rate_limit
+
+
+def _fetch_aggs_with_retry(
+    client: RESTClient,
+    max_retries: int = 5,
+    base_delay: float = 2.0,
+    **kwargs,
+) -> list:
+    """Fetch aggs with retry on transient failures and rate limits."""
+    for attempt in range(max_retries + 1):
+        try:
+            return list(client.list_aggs(**kwargs))
+        except Exception as e:
+            error_str = str(e)
+            is_retryable = any(
+                code in error_str for code in ("429", "500", "502", "503", "504")
+            )
+            if not is_retryable or attempt == max_retries:
+                raise
+            delay = min(base_delay * (2 ** attempt), 60.0)
+            logger.warning(
+                "Polygon API error (attempt %d/%d): %s. Retrying in %.1fs",
+                attempt + 1, max_retries, e, delay,
+            )
+            time.sleep(delay)
+    return []  # unreachable, but satisfies type checker
+
+
 # --- Function ----------------------------------------------------------------
 def fetch_polygon_bars(
     symbol: str,
@@ -69,7 +105,8 @@ def fetch_polygon_bars(
     outdir.mkdir(parents=True, exist_ok=True)
 
     client = RESTClient(api_key)
-    bars_iter = client.list_aggs(
+    bars = _fetch_aggs_with_retry(
+        client,
         ticker=ticker,
         multiplier=multiplier,
         timespan=timespan,
@@ -80,7 +117,7 @@ def fetch_polygon_bars(
         sort="asc",
     )
 
-    df = _bars_to_df(bars_iter)
+    df = _bars_to_df(bars)
     if df.empty:
         raise ValueError(f"No data returned for {ticker} between {start} and {end}")
 
@@ -91,7 +128,7 @@ def fetch_polygon_bars(
         outpath = outdir / f"{base}_{multiplier}{timespan}_{start}_{end}.parquet"
 
     df.to_parquet(outpath)
-    print(f"Saved {len(df):,} rows → {outpath}")
+    logger.info("Saved %s rows -> %s", f"{len(df):,}", outpath)
     return outpath
 
 def fetch_polygon_bars_chunked(
@@ -103,7 +140,7 @@ def fetch_polygon_bars_chunked(
     timespan: str = "minute",
     outpath: str = "data/usdjpy_1min.parquet",
     chunk_days: int = 30,
-    pause_sec: float = 13.0,   # 5 req/min → leave headroom
+    rate_limit: int = 5,
 ) -> Path:
     """
     Download [start, end] in chunks and save one merged parquet.
@@ -117,13 +154,13 @@ def fetch_polygon_bars_chunked(
 
     client = RESTClient(api_key)
     s, e = _to_dates(start), _to_dates(end)
+    pause = _adaptive_pause(rate_limit=rate_limit)
 
     dfs = []
-    calls = 0
     for cstart, cend in _drange(s, e, chunk_days=chunk_days):
-        # Polygon range is inclusive
-        print(f"Fetching {ticker} {timespan} {multiplier} from {cstart} to {cend} ...")
-        bars_iter = client.list_aggs(
+        logger.info("Fetching %s %s %s from %s to %s ...", ticker, timespan, multiplier, cstart, cend)
+        rows_data = _fetch_aggs_with_retry(
+            client,
             ticker=ticker,
             multiplier=multiplier,
             timespan=timespan,
@@ -134,19 +171,18 @@ def fetch_polygon_bars_chunked(
             sort="asc",
         )
         rows = []
-        for b in bars_iter:
+        for b in rows_data:
             rows.append({
-                "datetime": pd.to_datetime(b.timestamp, unit="ms", utc=True), # type: ignore
-                "open": b.open, "high": b.high, "low": b.low, "close": b.close, # type: ignore
-                "volume": b.volume, # type: ignore
+                "datetime": pd.to_datetime(b.timestamp, unit="ms", utc=True),
+                "open": b.open, "high": b.high, "low": b.low, "close": b.close,
+                "volume": b.volume,
             })
         if rows:
             df = pd.DataFrame(rows).set_index("datetime").sort_index()
             dfs.append(df)
 
-        calls += 1
-        # throttle
-        time.sleep(pause_sec)
+        # Adaptive rate-limited pause
+        time.sleep(pause)
 
     if not dfs:
         raise ValueError("No data returned across all chunks.")
@@ -158,5 +194,5 @@ def fetch_polygon_bars_chunked(
     out = Path(outpath)
     out.parent.mkdir(parents=True, exist_ok=True)
     full.to_parquet(out)
-    print(f"Saved {len(full):,} rows → {out}")
+    logger.info("Saved %s rows -> %s", f"{len(full):,}", out)
     return out

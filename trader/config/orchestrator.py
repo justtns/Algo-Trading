@@ -78,10 +78,19 @@ class TradingOrchestrator:
         strategies = orch.build_strategies()
     """
 
-    def __init__(self, total_capital: float):
+    def __init__(
+        self,
+        total_capital: float,
+        db_path: str | Path | None = None,
+    ):
         self.total_capital = total_capital
         self._specs: List[StrategySpec] = []
         self._allocations: List[StrategyAllocation] | None = None
+        self.db: Database | None = None
+        if db_path is not None:
+            from trader.persistence.database import Database
+
+            self.db = Database(db_path)
 
     def add_strategy(self, spec: StrategySpec) -> None:
         self._specs.append(spec)
@@ -125,6 +134,7 @@ class TradingOrchestrator:
         cls,
         portfolio_path: str | Path,
         accounts_path: str | Path | None = None,
+        db_path: str | Path | None = None,
     ) -> TradingOrchestrator:
         """
         Load orchestrator from a YAML portfolio config file.
@@ -136,6 +146,8 @@ class TradingOrchestrator:
         accounts_path : str or Path or None
             Optional path to accounts.yaml with broker credentials.
             Stored on the orchestrator for use by node builders.
+        db_path : str or Path or None
+            Optional path to SQLite database for persistence.
         """
         _ensure_registry()
 
@@ -145,7 +157,7 @@ class TradingOrchestrator:
 
         data = yaml.safe_load(path.read_text())
         total_capital = float(data["total_capital"])
-        orch = cls(total_capital=total_capital)
+        orch = cls(total_capital=total_capital, db_path=db_path)
 
         # Load account credentials if provided
         orch.account_credentials: Dict[str, Dict[str, Any]] = {}

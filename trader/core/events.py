@@ -73,6 +73,16 @@ class Fill:
     ts: datetime
     tag: Optional[str] = None
 
+    @property
+    def strategy_id(self) -> str | None:
+        """Alias for tag, for compatibility with portfolio store."""
+        return self.tag
+
+    @property
+    def size(self) -> float:
+        """Alias for qty, for compatibility with portfolio store."""
+        return self.qty
+
 
 @dataclass
 class Position:

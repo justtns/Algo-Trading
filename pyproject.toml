@@ -10,6 +10,7 @@ dependencies = [
     "pyarrow>=14.0",
     "holidays>=0.40",
     "pyyaml>=6.0",
+    "aiosqlite>=0.19",
 ]
 
 [project.optional-dependencies]
@@ -21,6 +22,9 @@ metatrader = [
 ]
 polygon = [
     "polygon-api-client>=1.13",
+]
+charts = [
+    "plotly>=5.0",
 ]
 notebooks = [
     "nbformat>=5.9",
@@ -35,6 +39,9 @@ dev = [
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
 
 [tool.setuptools.packages.find]
 include = ["trader*", "historical_data_services*"]
