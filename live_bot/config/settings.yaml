@@ -1,0 +1,6 @@
+notifier:
+  poll_interval: 5  # seconds between fill checks
+  enabled: true
+
+telegram:
+  parse_mode: HTML

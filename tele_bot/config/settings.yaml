@@ -1,0 +1,99 @@
+fx_pairs:
+  g10:
+    - EURUSD
+    - USDJPY
+    - GBPUSD
+    - USDCHF
+    - AUDUSD
+    - USDCAD
+    - NZDUSD
+    - USDSEK
+    - USDNOK
+  em_asia:
+    - USDCNH
+    - USDINR
+    - USDKRW
+    - USDSGD
+    - USDTHB
+    - USDMYR
+
+cross_asset:
+  equity: SPY
+  bonds: TLT
+  commodities: DBC
+  vix: VIXY  # VIX ETF fallback for free tier (I:VIX may not be available)
+
+schedule:
+  morning_brief: "06:00"
+  data_prefetch: "05:00"
+  timezone: "Asia/Singapore"
+
+data:
+  cache_dir: data  # relative to project root
+
+cache:
+  cooldown_minutes: 15  # skip API refresh if last refresh was within N minutes
+
+polygon:
+  rate_limit: 100  # paid tier allows higher throughput
+  max_retries: 5
+  base_delay: 2.0
+  history_days: 504  # ~2 years for indicator warmup
+
+indicators:
+  maa:
+    pairs:
+      - [5, 20]
+      - [5, 50]
+      - [5, 100]
+      - [5, 200]
+      - [10, 20]
+      - [10, 50]
+      - [10, 100]
+      - [10, 200]
+      - [15, 50]
+      - [15, 100]
+      - [15, 200]
+      - [20, 50]
+      - [20, 100]
+      - [20, 200]
+      - [25, 50]
+      - [25, 100]
+      - [25, 200]
+      - [30, 50]
+      - [30, 100]
+      - [30, 200]
+      - [35, 50]
+      - [35, 100]
+      - [35, 200]
+      - [40, 50]
+      - [40, 100]
+      - [40, 200]
+      - [50, 100]
+      - [50, 200]
+  adx_period: 14
+  bollinger_window: 20
+  bollinger_std: 2.0
+  ud_window: 21
+  rs_weekly_window: 26
+  rs_percentile_window: 52
+
+pca:
+  window: 120
+  n_components_etf: 5
+  n_components_fx: 3
+  pc1_collapse_threshold: 0.60
+  dim_collapse_threshold: 3.0
+  zscore_window: 60
+
+pca_etf_universe:
+  us_equity: [SPY, QQQ, IWM]
+  sector: [XLF, XLK, XLE, XLU, XLP, XLV, XLI, XLB]
+  international: [EFA, EEM, FXI, EWJ, EWG, EWU]
+  fixed_income: [TLT, IEF, SHY, HYG, LQD]
+  commodities: [GLD, SLV, USO, DBC]
+
+telegram:
+  parse_mode: HTML
+  whitelist: []  # Telegram user IDs allowed to use the bot (empty = open access)
+  # whitelist: [123456789, 987654321]

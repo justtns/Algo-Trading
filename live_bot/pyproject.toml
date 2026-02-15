@@ -1,0 +1,17 @@
+[project]
+name = "live-bot"
+version = "0.1.0"
+description = "Telegram bot for live trading notifications from NautilusTrader"
+requires-python = ">=3.11"
+dependencies = [
+    "python-telegram-bot>=21.0",
+    "apscheduler>=3.10",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+live-bot = "src.main:main"

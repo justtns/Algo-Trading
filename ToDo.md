@@ -39,6 +39,9 @@
 - [ ] Add control commands (`/start`, `/stop`, `/allocate`) after reliability hardening is complete.
 - [ ] Add periodic PnL summary with configurable interval.
 
+## Scanner
+- [ ] Add abilty to calculate residuals and plot against different time frame residuals for PCA moves. 
+
 ## Multi-Strategy Orchestration
 - [ ] Add runtime strategy lifecycle manager (start/stop/pause idempotent operations).
 - [ ] Add dynamic capital reallocation at runtime.
